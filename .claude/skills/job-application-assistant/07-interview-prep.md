@@ -1,113 +1,99 @@
 ---
-framework_version: 1.0.0
+framework_version: 2.0.0
 ---
 
-# Interview Preparation Guide
+# Interview preparation
 
-<!-- SETUP: STAR examples are personalized by running /setup based on your actual experience -->
+The pipeline is `/interview`. This file holds the answer craft it applies:
+how an answer is built, how the hard questions are handled, what to ask back,
+and how to run a rehearsal.
 
-## STAR Format
+Stories live in `~/Documents/Jobs/CV/STAR-BANK.md`, numbers in
+`FROZEN-FACTS.md`. Neither is stored here; this repository is public.
 
-Structure answers as: **Situation** (context), **Task** (your responsibility), **Action** (what you did), **Result** (outcome).
+## Answer shape
 
-Keep answers to 1-2 minutes. Be specific. End with what you learned or would do differently.
+**Behavioural — STAR.** Situation, Task, Action, Result. 60–120 seconds spoken.
 
-## Ready-Made STAR Examples
+Three failure modes account for most weak answers:
 
-<!-- These are populated by /setup from your actual experience. Below are templates showing the format. -->
+- **Plural pronouns.** "We" describes a team the candidate was near. Interviewers discount it automatically. If the honest telling is "we", narrow the framing until it isolates what was genuinely theirs.
+- **A missing T.** Skipping straight from context to actions hides whether the work was owned or merely witnessed. The Task sentence is where ownership is established, and it is the one most often dropped.
+- **A soft R.** End on the frozen number, quoted exactly as `FROZEN-FACTS.md` has it, with any mandatory qualifier attached. An answer that trails off into "and it went well" wastes the story.
 
-### 1. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT - what was happening, what was the problem]
-**T:** [YOUR RESPONSIBILITY - what you specifically needed to do]
-**A:** [WHAT YOU DID - specific actions, tools, methods]
-**R:** [OUTCOME - measurable results, adoption, impact]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+**Technical — structure first.** Name the framework or approach, then the
+worked example. An interviewer can follow a structured answer they disagree
+with; they cannot follow an unstructured one they agree with.
 
-### 2. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT]
-**T:** [YOUR RESPONSIBILITY]
-**A:** [WHAT YOU DID]
-**R:** [OUTCOME]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+**Every answer ends with a cue** — a 5–8 word memory hook. The pack teaches
+recall, not recitation. A memorised paragraph collapses under the first
+follow-up; a cue survives it.
 
-### 3. [PROJECT_NAME] ([SKILL_DEMONSTRATED])
-**S:** [CONTEXT]
-**T:** [YOUR RESPONSIBILITY]
-**A:** [WHAT YOU DID]
-**R:** [OUTCOME]
-**Use for:** "[QUESTION_TYPE_1]", "[QUESTION_TYPE_2]"
+## Hard questions
 
-<!-- Add more STAR examples as needed. Aim for 4-6 covering different competencies. -->
+| Question | How to handle it |
+|---|---|
+| "Why are you leaving?" | Forward-looking, no criticism of the former employer. The reason should point at what the new role offers, not what the old one lacked. |
+| "You do not have X." | Acknowledge the gap in one sentence, bridge to the adjacent thing that is true, stop. Do not argue that X is not really needed. The row already exists in the audit's integrity table — the honest line was written there. |
+| "Where do you see yourself in five years?" | Ambition that this role's own growth path can satisfy. An answer the interviewer's team cannot deliver is a reason to reject. |
+| "What is your biggest weakness?" | A real one, with the concrete mitigation already in place. A strength in a weakness costume is transparent and wastes the one question where candour scores. Draw from the growth-areas table in `STAR-BANK.md`. |
+| "Why this company?" | Never generic. Name a specific desk, mandate, product or report from `Research-<Role>.md`, and say why it draws you. If the answer would be true of three competitors, it is not an answer. |
+| Anything touching a RISK row | The pack's Danger zone already holds the question and the honest line. Say the honest line; do not improvise a better-sounding one. |
 
-## Common Tough Questions
+**Logistics questions are locked.** Salary, visa, notice, availability and start
+date must match what was already submitted in writing. Check `STAR-BANK.md`'s
+locked-answers table before answering any of them. A verbal answer that
+contradicts a submitted form is worse than a weak answer, because it makes every
+other answer suspect.
 
-### "Why did you leave [previous company]?"
-> [PREPARE YOUR ANSWER - be honest, forward-looking, no negativity about former employer]
+## Questions to ask back
 
-### "You don't have [specific skill/experience]."
-> [PREPARE YOUR ANSWER - acknowledge the gap, bridge to adjacent experience, show willingness to learn]
+Tier them. A good final question is a positioning move, not a formality.
 
-### "Where do you see yourself in 5 years?"
-> [PREPARE YOUR ANSWER - show ambition aligned with the role's growth path]
+**Safe** — always appropriate, never wasted:
+- What does a typical week look like?
+- What would success look like in the first six months?
+- How is the team structured, and how does work get divided?
 
-### "What's your biggest weakness?"
-> [PREPARE YOUR ANSWER - genuine weakness with concrete mitigation strategy]
+**Sharp** — shows the research landed:
+- Reference something specific from the research and ask what it means for this desk.
+- What is the biggest challenge the team is facing right now?
+- Which of the responsibilities in the ad actually takes the most time?
 
-### "Why this company specifically?"
-> Customize per company. Must reference: specific projects, company values, market position, or team structure. Never give a generic answer.
+**Strategic** — for finals and senior conversations:
+- How does this desk's mandate change if <a specific market or regulatory shift> plays out?
+- What separates someone who does well here in year one from someone who does not?
+- What would make you decide this hire was a mistake?
 
-## Questions You Should Ask Interviewers
+**Culture questions prevent disappointment** and are worth spending one slot on:
+professional development, the balance between build and maintenance work,
+leadership style, what people who thrive here have in common.
 
-### About the Role
-- "What does a typical week look like in this role?"
-- "What would success look like in the first 6 months?"
-- "What's the biggest challenge the team is facing right now?"
+Never ask something the ad or the company's own site plainly answers. It reads
+as not having read either.
 
-### About the Team
-- "How big is the team, and how do you divide work?"
-- "What does the development/project lifecycle look like, from idea to production?"
-- "How do you onboard new team members?"
+## Phone and video
 
-### About Tech & Growth
-- "What's your current tech stack for [relevant area]?"
-- "Is there room to grow into more architectural or strategic decisions?"
-- "How does the team stay current with new tools and methods?"
+- Have the cues visible, not the full answers. Reading aloud is audible.
+- Water within reach.
+- Silence is fine. Five seconds of thinking beats a fast weak answer.
+- Ask for clarification on a vague question rather than guessing which one was meant.
+- Close with: "Is there anything about my background you would like me to expand on?" It surfaces an unspoken doubt while there is still time to answer it.
 
-### About Culture (use these to prevent disappointment)
-- "How would you describe the team culture?"
-- "What does professional development look like here?"
-- "Is there flexibility for remote/hybrid work?"
-- "What's the balance between development/new projects and maintenance work?"
-- "How would you describe the leadership style in this team?"
-- "What do people who thrive here have in common?"
+## Rehearsal protocol
 
-## Phone/Video Interview Tips
-- Have STAR examples written out (use this file)
-- Keep a glass of water nearby
-- Smile when speaking (it changes your tone)
-- Ask for clarification if a question is vague
-- It's OK to take 5 seconds to think before answering
-- End with: "Is there anything else you'd like to know about my background?"
+When the user wants to practise, run it from the built pack, not from memory.
 
-## After the Application (Best Practice)
+1. Confirm the round and the panel being simulated.
+2. Warm up: "Tell me about yourself." Check it lands on the CV's one capability.
+3. Move to role-specific technical questions from streams 3 and 4.
+4. Two behavioural questions using the competencies the posting names.
+5. One question from the Danger zone. This is the point of the exercise.
+6. After each answer: what worked, what to sharpen, and which story from the bank would have served better.
+7. Afterwards, append what they struggled with to the debrief table in `STAR-BANK.md`. A story that failed under follow-up is the most valuable thing the rehearsal produced.
 
-### Follow-Up Etiquette
-- **Don't call to "stand out"** or to learn more about the role post-submission - this risks a negative impression
-- If the employer specified a timeline, respect it and wait
-- If no timeline was given and significant time has passed (2+ weeks), a brief call to ask about status is acceptable
-- If you have genuinely new, relevant information to share, a short follow-up is fine
+## After the round
 
-### Thank-You Notes
-- When you receive any update (interview invitation, rejection, or status update), send a brief thank-you message
-- Express appreciation for their time and the process
-- Keep it short (2-3 sentences)
-
-## Roleplay Guidelines
-When the user asks for interview practice:
-1. Ask which role/company to simulate
-2. Start with easy warm-up questions ("Tell me about yourself")
-3. Progress to role-specific technical questions
-4. Include 1-2 behavioral questions using the competencies from the job posting
-5. End with a tough question or curveball
-6. After each answer, give brief feedback: what worked, what to sharpen
-7. Suggest which STAR example would work best for each question
+- **Thank-you note** within a day. Two or three sentences. Reference one specific thing discussed, so it reads as written rather than templated.
+- **Debrief immediately**, while recall is intact. What was actually asked goes into `Interview-Intel.md` and `STAR-BANK.md`; the stage result goes into the tracker via `/outcome`.
+- **Follow-up etiquette:** respect a stated timeline. Where none was given and two weeks have passed, a brief status enquiry is reasonable. Do not call merely to stand out — it risks the impression it is meant to improve.

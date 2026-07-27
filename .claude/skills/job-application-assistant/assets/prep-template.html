@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{ROLE}} — {{STAGE}} · {{COMPANY}} interview prep</title>
+<!-- Inlined at build time by inline-css.sh — do not restate base/component styles below. -->
+<link rel="stylesheet" href="CLAUDE_DESIGN_CSS_PATH">
+<style>
+/* ---- page-specific only; every color via var(--token) ---- */
+.hero{border-bottom:1px solid var(--border);padding:1.4rem 0 1rem;margin-bottom:0}
+.hero .kicker{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+.hero h1{font-size:1.6rem;line-height:1.25;margin:.2rem 0 .6rem}
+.hero-row{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.prog-wrap{margin-top:.9rem}
+.prog-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted-foreground);margin-bottom:.3rem}
+.prog{height:6px;border-radius:3px;background:var(--secondary);overflow:hidden}
+.prog>span{display:block;height:100%;width:0;border-radius:3px;background:var(--primary);transition:width .3s}
+.panel[hidden]{display:none}
+.panel{padding:1.2rem 0 2.5rem}
+/* question cards */
+.qa{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);margin:.6rem 0;overflow:hidden}
+.qa-q{display:flex;gap:.6rem;align-items:baseline;width:100%;text-align:left;background:none;border:0;padding:.8rem 1rem;cursor:pointer;font:inherit;color:var(--foreground)}
+.qa-q:hover{background:var(--accent)}
+.qa-q .q-text{flex:1;font-weight:600}
+.qa-q .chev{color:var(--muted-foreground);transition:transform .2s;flex:none}
+.qa.open .chev{transform:rotate(90deg)}
+.qa-a{display:none;padding:0 1rem 1rem;border-top:1px dashed var(--border)}
+.qa.open .qa-a{display:block}
+.qa-a p{margin:.7rem 0}
+.cue{font-size:.85rem;color:var(--muted-foreground);border-left:3px solid var(--primary);padding:.15rem .6rem;margin-top:.6rem}
+.qa-actions{display:flex;gap:.5rem;padding:0 1rem .8rem}
+.qa.open .qa-actions{border-top:0}
+.qa[data-state="work"]{border-left:3px solid var(--warning)}
+.qa[data-state="confident"]{border-left:3px solid var(--success)}
+.qa[data-state="confident"] .q-text{color:var(--muted-foreground)}
+.state-note{font-size:.75rem;color:var(--muted-foreground);margin-left:auto;align-self:center}
+/* filters */
+.pills{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0 .4rem}
+.pill{border:1px solid var(--border);background:var(--card);border-radius:999px;padding:.25rem .8rem;font-size:.8rem;cursor:pointer;color:var(--foreground)}
+.pill.active{background:var(--primary);border-color:var(--primary);color:var(--primary-foreground)}
+.bank-tools{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.4rem 0 .8rem}
+/* misc */
+.locked{border-left:3px solid var(--destructive)}
+.person-meta{font-size:.82rem;color:var(--muted-foreground);margin:.1rem 0 .6rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.55rem;align-items:baseline;padding:.3rem 0}
+.tier-h{margin-top:1.4rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground)}
+.section-note{font-size:.85rem;color:var(--muted-foreground)}
+@media print{
+  .tab-nav,.bank-tools,.pills,.qa-actions,.theme-btn{display:none!important}
+  .panel[hidden]{display:block!important}
+  .qa .qa-a{display:block!important}
+  .qa{break-inside:avoid}
+  body{font-size:11px}
+}
+</style>
+</head>
+<!-- data-prep-key: unique per company+stage, e.g. "Acme-Technical" — namespaces saved progress.
+     data-when: interview datetime ISO 8601 with offset, e.g. "2026-07-30T14:00:00+01:00".
+     If the date/time is unknown, delete data-when and the countdown chip renders nothing. -->
+<body data-prep-key="{{COMPANY}}-{{STAGE_SLUG}}" data-when="{{DATETIME_ISO}}">
+
+<div class="container">
+  <header class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="kicker">{{COMPANY}} · Interview prep</div>
+        <h1>{{ROLE}} — <span style="color:var(--primary)">{{STAGE}}</span></h1>
+        <div class="hero-row">
+          <span class="badge">{{DATETIME_HUMAN}}</span>
+          <span class="badge secondary">{{FORMAT}}</span>            <!-- e.g. Video · Teams -->
+          <span class="badge secondary">{{DURATION}}</span>          <!-- e.g. 45 min -->
+          <span class="badge outline" id="countdown"></span>
+        </div>
+      </div>
+      <button class="btn ghost theme-btn" id="themeToggle" title="Toggle dark mode">◐</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-label"><span>Practice progress</span><span id="progText">0 / 0 confident</span></div>
+      <div class="prog"><span id="progBar"></span></div>
+    </div>
+  </header>
+
+  <nav class="tab-nav" id="tabs">
+    <button class="active" data-tab="plan">Game plan</button>
+    <button data-tab="people">Interviewers</button>
+    <button data-tab="bank">Question bank</button>
+    <button data-tab="tech">Technical</button>
+    <button data-tab="intel">Intel</button>
+    <button data-tab="ask">Your questions</button>
+    <button data-tab="danger">Danger zone</button>
+  </nav>
+
+  <!-- ============================================================ GAME PLAN -->
+  <section class="panel" id="panel-plan">
+    <div class="alert destructive">
+      <div class="alert-title">Locked answers — match the paper trail, then stop talking</div>
+      <!-- TEMPLATE: one line per locked topic, scripted verbatim from the comp form / prior prep. -->
+      <p><strong>Salary:</strong> {{LOCKED_SALARY}}</p>
+      <p><strong>Visa:</strong> {{LOCKED_VISA}}</p>
+      <p><strong>Availability:</strong> {{LOCKED_AVAILABILITY}}</p>
+    </div>
+
+    <h2>Where this round sits</h2>
+    <!-- TEMPLATE: process map — mark DONE stages, this one <<< YOU ARE HERE, and what each later gate tests. -->
+    <pre>{{PROCESS_MAP}}</pre>
+
+    <h2>Top five priorities</h2>
+    <p class="section-note">Highest probability × highest stakes. Practise these aloud first — the full bank is in the Question tab.</p>
+    <ol>
+      <!-- TEMPLATE: five <li>, each linking the priority to why it matters for THIS round -->
+      <li>{{PRIORITY_1}}</li>
+    </ol>
+
+    <h2>The argument you are defending</h2>
+    <!-- One short paragraph: the CV variant's one-line thesis, and the 2-3 proof points behind it. -->
+    <p>{{ARGUMENT}}</p>
+  </section>
+
+  <!-- ============================================================ INTERVIEWERS -->
+  <section class="panel" id="panel-people" hidden>
+    <p class="section-note">Sourced from LinkedIn via your own session and the folder's People file — every claim attributed there; inference is flagged.</p>
+    <div class="grid grid-med">
+      <!-- TEMPLATE: one .card per interviewer (or likely panellist — badge them "likely"). Duplicate as needed. -->
+      <div class="card">
+        <h3>{{PERSON_NAME}} <span class="badge secondary">{{PERSON_ROLE_TAG}}</span></h3>
+        <div class="card-body">
+          <div class="person-meta">{{PERSON_HEADLINE}} · {{PERSON_TENURE}}</div>
+          <p><strong>Path in:</strong> {{PERSON_PATH}}</p>
+          <p><strong>What they care about:</strong> {{PERSON_CARES}}</p>
+          <p><strong>In their own words:</strong> <em>“{{PERSON_QUOTE}}”</em></p>
+          <p><strong>Likely to ask:</strong> {{PERSON_LIKELY_QUESTIONS}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ QUESTION BANK -->
+  <section class="panel" id="panel-bank" hidden>
+    <div class="pills" id="filters">
+      <button class="pill active" data-cat="all">All</button>
+      <button class="pill" data-cat="reported">Reported</button>
+      <button class="pill" data-cat="behavioural">Behavioural</button>
+      <button class="pill" data-cat="technical">Technical</button>
+      <button class="pill" data-cat="cv">CV defence</button>
+      <button class="pill" data-cat="logistics">Logistics</button>
+    </div>
+    <div class="bank-tools">
+      <button class="btn outline" id="revealAll">Reveal all</button>
+      <button class="btn ghost" id="hideAll">Hide all</button>
+      <span class="section-note">Click a question → recall your answer aloud → reveal → mark it. Marks persist in this browser.</span>
+    </div>
+
+    <div id="bank">
+      <!-- TEMPLATE: one .qa per question. Rules:
+           * data-id: stable unique slug (state is keyed on it — never renumber existing ids on later edits)
+           * data-cat: reported | behavioural | technical | cv | logistics
+           * Reported questions MUST carry a source badge: <span class="badge outline">Glassdoor · Mar 2026</span>
+             Predicted ones carry <span class="badge secondary">predicted</span>
+           * Answer: 60–120s spoken, STAR for behavioural, framework-first for technical,
+             frozen facts only. End with the one-line cue.
+           * Locked logistics answers additionally get class="qa locked".
+      -->
+      <article class="qa" data-id="q-example-1" data-cat="reported">
+        <button class="qa-q"><span class="chev">▸</span><span class="q-text">{{QUESTION_TEXT}}</span><span class="badge outline">{{SOURCE_BADGE}}</span></button>
+        <div class="qa-a">
+          <p>{{MODEL_ANSWER}}</p>
+          <div class="cue">Cue: {{CUE}}</div>
+        </div>
+        <div class="qa-actions">
+          <button class="btn outline" data-mark="work">Needs work</button>
+          <button class="btn outline" data-mark="confident">Confident</button>
+          <span class="state-note"></span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============================================================ TECHNICAL REVISION -->
+  <section class="panel" id="panel-tech" hidden>
+    <p class="section-note">The concepts to re-derive the night before — each opens with the crisp one-liner you'd say first, then the depth behind it.</p>
+    <!-- TEMPLATE: one <details class="card"> per concept, grouped under h2 topic headings if many. -->
+    <h2>{{TOPIC_GROUP}}</h2>
+    <details class="card"><summary style="padding:.8rem 1rem;cursor:pointer;font-weight:600">{{CONCEPT}}</summary>
+      <div class="card-body">
+        <p><strong>Say first:</strong> {{CONCEPT_ONE_LINER}}</p>
+        <p>{{CONCEPT_DEPTH}}</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============================================================ COMPANY INTEL -->
+  <section class="panel" id="panel-intel" hidden>
+    <h2>The desk</h2>
+    <!-- Entity, desk, reporting line, methodology hooks (e.g. VaR method), systems — from Research-<Role>.md. -->
+    <p>{{DESK_DIGEST}}</p>
+
+    <h2>News hooks</h2>
+    <p class="section-note">Dated facts you can use — as a talking point, a question, or a risk to be ready to discuss.</p>
+    <table>
+      <thead><tr><th>Date</th><th>Fact</th><th>So what</th></tr></thead>
+      <tbody>
+        <!-- TEMPLATE: one row per item, newest first. Undated items don't belong here. -->
+        <tr><td>{{NEWS_DATE}}</td><td>{{NEWS_FACT}}</td><td>{{NEWS_SO_WHAT}}</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What interviews here are like</h2>
+    <!-- Process stats from Glassdoor/Indeed: difficulty, typical length, rounds, sourcing split. Attribute counts ("across 14 reviews"). -->
+    <p>{{PROCESS_STATS}}</p>
+  </section>
+
+  <!-- ============================================================ YOUR QUESTIONS -->
+  <section class="panel" id="panel-ask" hidden>
+    <p class="section-note">Three tiers. Safe ones fill time gracefully; sharp ones show homework; strategic ones are for senior interviewers only.</p>
+    <div class="tier-h">Safe</div>
+    <ul><li>{{ASK_SAFE}}</li></ul>
+    <div class="tier-h">Sharp — shows the homework</div>
+    <ul><li>{{ASK_SHARP}}</li></ul>
+    <div class="tier-h">Strategic — senior panel only</div>
+    <ul><li>{{ASK_STRATEGIC}}</li></ul>
+  </section>
+
+  <!-- ============================================================ DANGER ZONE -->
+  <section class="panel" id="panel-danger" hidden>
+    <div class="alert warning">
+      <div class="alert-title">Integrity lines — honest framing, never invented experience</div>
+      <p>From the CV-JD audit. If a follow-up pushes past what's true, concede gracefully and bridge to the adjacent real experience.</p>
+    </div>
+    <table>
+      <thead><tr><th>If they probe…</th><th>Do not claim</th><th>The honest line</th></tr></thead>
+      <tbody>
+        <!-- TEMPLATE: one row per audit integrity risk + each GAP verdict likely to be probed. -->
+        <tr><td>{{PROBE}}</td><td>{{DO_NOT_CLAIM}}</td><td>{{HONEST_LINE}}</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Day-of checklist</h2>
+    <ul class="checklist" id="dayof">
+      <!-- TEMPLATE: one li per item; data-id stable. Include: reread locked answers, tech check for video,
+           printed CV copy, notebook + the three cue words, arrival/join 5 min early, etc. -->
+      <li><input type="checkbox" data-id="c-example-1"> <span>{{CHECK_ITEM}}</span></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+  var KEY='prep:'+document.body.dataset.prepKey;
+  var store={};
+  try{store=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+
+  /* theme */
+  var root=document.documentElement;
+  if(store._theme)root.dataset.theme=store._theme;
+  document.getElementById('themeToggle').addEventListener('click',function(){
+    var cur=root.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+    root.dataset.theme=(cur==='dark')?'light':'dark';
+    store._theme=root.dataset.theme;save();
+  });
+
+  /* tabs */
+  var nav=document.getElementById('tabs');
+  nav.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-tab]');if(!b)return;
+    nav.querySelectorAll('button').forEach(function(x){x.classList.toggle('active',x===b)});
+    document.querySelectorAll('.panel').forEach(function(p){p.hidden=(p.id!=='panel-'+b.dataset.tab)});
+  });
+
+  /* countdown */
+  var when=document.body.dataset.when,cd=document.getElementById('countdown');
+  if(when&&when.indexOf('{'+'{')===-1){
+    var ms=new Date(when)-new Date();
+    if(isNaN(ms))cd.remove();
+    else if(ms<0)cd.textContent='round passed — debrief?';
+    else{var d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5);
+      cd.textContent=d>0?('in '+d+'d '+h+'h'):('today — in '+h+'h');}
+  }else cd.remove();
+
+  /* question cards */
+  var cards=[].slice.call(document.querySelectorAll('.qa'));
+  function paint(c){
+    var s=store[c.dataset.id]||'';
+    c.dataset.state=s;
+    c.querySelector('.state-note').textContent=s==='confident'?'✓ confident':(s==='work'?'— needs work':'');
+  }
+  cards.forEach(function(c){
+    paint(c);
+    c.querySelector('.qa-q').addEventListener('click',function(){c.classList.toggle('open')});
+    c.querySelectorAll('[data-mark]').forEach(function(b){
+      b.addEventListener('click',function(){
+        var m=b.dataset.mark;
+        store[c.dataset.id]=(store[c.dataset.id]===m)?'':m;
+        save();paint(c);progress();
+      });
+    });
+  });
+  document.getElementById('revealAll').addEventListener('click',function(){cards.forEach(function(c){c.classList.add('open')})});
+  document.getElementById('hideAll').addEventListener('click',function(){cards.forEach(function(c){c.classList.remove('open')})});
+
+  /* filters */
+  var pills=document.getElementById('filters');
+  pills.addEventListener('click',function(e){
+    var p=e.target.closest('.pill');if(!p)return;
+    pills.querySelectorAll('.pill').forEach(function(x){x.classList.toggle('active',x===p)});
+    cards.forEach(function(c){c.style.display=(p.dataset.cat==='all'||c.dataset.cat===p.dataset.cat)?'':'none'});
+  });
+
+  /* progress */
+  function progress(){
+    var done=cards.filter(function(c){return store[c.dataset.id]==='confident'}).length;
+    document.getElementById('progText').textContent=done+' / '+cards.length+' confident';
+    document.getElementById('progBar').style.width=(cards.length?100*done/cards.length:0)+'%';
+  }
+  progress();
+
+  /* day-of checklist */
+  document.querySelectorAll('#dayof input[type=checkbox]').forEach(function(cb){
+    cb.checked=!!store[cb.dataset.id];
+    cb.addEventListener('change',function(){store[cb.dataset.id]=cb.checked;save()});
+  });
+
+  /* print: reveal everything */
+  addEventListener('beforeprint',function(){cards.forEach(function(c){c.classList.add('open')})});
+})();
+</script>
+</body>
+</html>

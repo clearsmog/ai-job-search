@@ -1,109 +1,229 @@
-# /interview - Prepare for an Interview on a Tracked Application
+# /interview - Build a prep pack for one interview round
 
-You are preparing the user for a real, scheduled interview on one of their applications. The frameworks for this already exist - `07-interview-prep.md` (STAR examples, tough questions, questions to ask, roleplay protocol) and the Company Research Checklist in `04-job-evaluation.md` - and the `/outcome` archive records which stage the user is at and what earlier stages surfaced. This command wires them together into a stage-specific prep pack and an optional mock interview.
+You are preparing the user for a real, scheduled interview. The output is one
+self-contained, interactive HTML page per round, saved in the company folder
+next to the CV that earned the interview.
 
-`/apply` optimizes what the company reads; `/interview` optimizes what the company hears. The bridge between them is consistency: the interviewer has read the submitted CV and cover letter, so everything prepared here must match what those documents claim.
+`$ARGUMENTS` may name a company, optionally with a round.
 
-Follow these steps **in order**.
+```
+[0] locate   company folder + which round + invitation details
+[1] read     existing folder intel — no new research yet
+[2] research → Interview-Intel.md    reported questions, process, panel, news
+[3] build    question bank + model answers, drafted against doctrine
+[4] render  → Interview-Prep-<Stage>.html   from assets/prep-template.html
+[5] verify   in the browser: tabs, cards, dark mode actually work
+[6] report   top questions to practise, weak spots
+```
 
----
+Everything lands in `~/Documents/Jobs/<Company>/`.
 
-## Step 0: Parse Input
-
-`$ARGUMENTS` may contain a company name (optionally with a role), e.g. `/interview acme`.
-
-- **With an argument:** match against `job_search_tracker.csv` rows (case-insensitive on company, then role). One match → proceed. Several → list and ask. None → this application isn't tracked; suggest `/outcome <company>` to register it first, or accept the posting and role details directly if the user wants to prep anyway.
-- **Without an argument:** list tracker rows whose status suggests a live process (`interview`, `offer`, or recently `applied`) and ask which one. If the tracker is empty, ask for the company, role, and posting.
-
-v1 preps for a **specific application**. Generic no-target practice is out of scope - if asked, prep against a real tracked application instead.
-
----
-
-## Step 1: Load the Application Context
-
-1. **The archive** (maintained by `/outcome`): `documents/applications/<company>_<role>/`
-   - `job_posting.md` - the exact posting the user applied to
-   - `cv_draft.tex` and `cover_letter.tex` - what was actually submitted. **These are what the interviewer read**; every talking point must be consistent with their claims.
-   - `outcome.md` - the stage reached so far and any recorded feedback from earlier stages. Feedback from stage N is the highest-value input for stage N+1 prep.
-2. **Fallbacks** (the application may predate `/outcome`): posting via WebFetch on the tracker row's `source` URL, or ask the user to paste it; CV via `cv/main_<company>*.tex` and cover letter via `cover_letters/cover_<company>_*.tex`. State plainly which context is missing rather than guessing - and suggest `/outcome <company>` to build the archive for next time.
-3. **Ask the user what this interview is** (skip anything `outcome.md` already records): stage (phone screen / technical / case / final round), date, format (phone, video, onsite), and who is interviewing (names and titles, if known).
-4. **Read the frameworks once** - do not re-read them in later steps:
-   - `.claude/skills/job-application-assistant/07-interview-prep.md`
-   - `.claude/skills/job-application-assistant/01-candidate-profile.md`
-   - `.claude/skills/job-application-assistant/02-behavioral-profile.md`
-   - `.claude/skills/job-application-assistant/04-job-evaluation.md`
+`/apply` optimises what the company reads. `/interview` optimises what they
+hear. The bridge is consistency: the interviewer has read the submitted CV, so
+everything prepared here must match what that document claims.
 
 ---
 
-## Step 2: Research the Company (Interview-Focused)
+## Doctrine
 
-Execute the Company Research Checklist that `04-job-evaluation.md` defines: company website (mission, values, recent news), review sites, LinkedIn (team size, recent hires), and media coverage (growth, restructuring, workplace issues).
+Continuous with `/apply`'s — the interview defends the document that got it.
 
-Additions for interview purposes:
+### 1. The prep continues the CV's argument
 
-- **Interviewer angle:** if interviewer names are known (from Step 1 or the tracker's `contact_person`), look up their public professional profile. A hiring manager probes team fit and motivation; a senior engineer probes technical depth; HR probes the CV timeline. Note the likely angle per interviewer - do not speculate beyond public information.
-- **Conversation hooks:** 2-3 recent, verifiable company specifics (a product launch, a stated strategic priority) the user can reference naturally in answers and in the "why this company" moment.
+The tailored CV sold **one capability**. The interview deepens that same
+argument; it does not reopen the generalist portfolio. Read the CV's
+`// VARIANT:` banner and the `CV-JD-AUDIT.md` verdict to recover what the
+argument was, and make every model answer pull toward it. An answer that drifts
+into unrelated strengths dilutes the candidacy the CV constructed.
 
-**Verify before using:** every company claim that will appear in the prep pack must be independently confirmed via WebFetch/WebSearch - same rule the repo applies to cover-letter claims. An unverified "fact" delivered confidently in an interview is worse than no fact.
+### 2. Facts are frozen, and so is anything already submitted
 
----
+The numbers in `~/Documents/Jobs/CV/FROZEN-FACTS.md` are fixed, with their
+mandatory qualifiers attached. So is anything already committed on paper:
+compensation forms, application answers, stated availability and notice.
 
-## Step 3: Build the Prep Pack
+**A verbal answer that contradicts a submitted form is worse than a weak
+answer.** Salary, visa, notice and availability get scripted word-for-word from
+`STAR-BANK.md`'s locked-answers table and the folder's existing documents, and
+are marked LOCKED in the pack. If no prior commitment exists, draft one and flag
+it as new for the user to confirm before it is spoken.
 
-Assemble a stage-appropriate prep document with these sections:
+### 3. Coach honest framing, never invented experience
 
-### 1. Likely questions
-Derive from four sources, in priority order:
-1. **Recorded feedback from earlier stages** (`outcome.md`) - anything flagged, doubted, or left unresolved will come back
-2. **The fit evaluation's gaps** - the requirements where the profile is weakest are the likeliest probes. For each, prepare an honest bridge answer per `07`'s "You don't have [X]" pattern: acknowledge, connect adjacent experience, show the learning path. **Never prepare an answer that invents experience.**
-3. **The posting's stated requirements** - competency by competency
-4. **The stage type** - phone screens get motivation and timeline questions; technical rounds get the posting's stack; final rounds get values, salary, and "any reservations" questions
+`CV-JD-AUDIT.md` carries an "Integrity risks — do not claim" table. Those rows
+become the pack's **Danger zone**: for each risk, the question that would expose
+it and the honest defensive answer. The five-minute test applies to spoken
+answers exactly as it does to bullets.
 
-### 2. STAR answer mapping
-Match the ready-made STAR examples in `07-interview-prep.md` to the likely questions using their "Use for" tags. Then:
-- For likely questions **no existing STAR example covers**, draft a new STAR answer grounded strictly in facts from `01-candidate-profile.md` - profile facts arranged into S/T/A/R, not embellished. Include these drafts in the prep pack; offer to append them to `07-interview-prep.md` only if the user explicitly approves.
-- If `/setup` left incomplete STAR stubs relevant to this role, surface them: the user should fill in the details before the interview.
+### 4. Reported is not inferred
 
-### 3. Consistency brief
-A short list of the specific claims the submitted CV and cover letter make (achievements, numbers, skills emphasized) that the interviewer is most likely to probe. The rule stated plainly: **no claim in the room that isn't on the paper, and every claim on the paper must be defensible in depth.**
-
-### 4. Tough questions, customized
-The relevant entries from `07`'s tough-question list with per-application answers - "Why this company specifically?" must use the verified hooks from Step 2, never a generic line.
-
-### 5. Questions to ask
-Pick 4-6 from `07`'s categories, customized to the research and the stage: role and team questions at screens, tech and growth questions at technical rounds, culture and leadership questions by the final round (that is the last chance to detect a deal-breaker). Cut any question the research already answers publicly - asking it signals you didn't look.
-
-### 6. Logistics
-The phone/video tips from `07` when the format calls for them, plus date and interviewer names as a header.
-
-Save the pack to `documents/applications/<company>_<role>/interview_prep_<stage>.md` (create the folder if this application predates `/outcome`). The folder is gitignored, so the pack stays personal; one file per stage, so earlier packs remain as history. Present the pack in chat as well - the file is the artifact, the conversation is the delivery.
+A question a real candidate reported is evidence. A question predicted from the
+JD is a guess. Both belong in the pack, labelled differently: reported questions
+carry source and date on the card, predicted ones are marked as predicted. If a
+research track comes back empty, say so in the report. **A padded question bank
+reads as coverage the user does not actually have.**
 
 ---
 
-## Step 4: Offer a Mock Interview
+## Stage 0 — Locate inputs
 
-Ask if the user wants to practice. If yes, run the roleplay **in this conversation** following the Roleplay Guidelines in `07-interview-prep.md` exactly: warm-up first, then role-specific technical questions, 1-2 behavioral questions tied to the posting's competencies, and one tough question or curveball. After each answer, give brief feedback - what worked, what to sharpen, and which STAR example from the pack would have served better.
+Establish four things: the **company folder**, the **round**, **when and how**
+(date, time, video or in person, duration), and the **interviewer names** if
+known.
 
-Calibrate feedback against `02-behavioral-profile.md`: coach toward the user's natural register, not a generic ideal - the same voice-consistency rule the `/apply` reviewer applies to cover letters.
+Most of this is usually already in the folder: invitation screenshots, forwarded
+emails, prior prep files. Read those before asking. Ask only for what is
+genuinely absent, and state what you assumed.
+
+If `~/Documents/Jobs/job_search_tracker.csv` has a row for this application,
+read it: it records the stage reached and any feedback from earlier rounds.
+**Feedback from round N is the highest-value input for round N+1.** If the
+application is not tracked, suggest `/outcome <company>` afterwards, and carry
+on.
+
+Derive the stage slug for filenames: `HR-Screen`, `Technical`, `Case-Study`,
+`Final`, `Assessment-Centre`.
+
+## Stage 1 — Read the folder intel
+
+These were produced by `/apply`. Read what exists; none are guaranteed.
+
+| File | What to take from it |
+|---|---|
+| `<Role>-<Company>.md` | Responsibilities and essentials become predicted technical questions; the employer's vocabulary for answers |
+| `Research-<Role>.md` | Entity, desk, methodology hooks, strategy facts → intel digest and "questions to ask them" |
+| `*People-LinkedIn.md` | Hiring team map, incumbents' self-descriptions, likely panel |
+| `CV-JD-AUDIT.md` | Integrity risks → Danger zone; PARTIAL and GAP verdicts → the follow-ups to expect |
+| `qiankun-resume.typ` | The variant banner (the argument) and every bullet — **each bullet is a question** |
+| Prior prep packs | Locked answers verbatim; the process map so far |
+| `~/Documents/Jobs/CV/STAR-BANK.md` | Existing stories, growth areas, locked answers, past debriefs |
+| Comp form, application answers | Anything already committed on paper |
+
+**Do not re-research what these already answer.** The fresh research stage
+exists for what the folder cannot know: what interviews at this company are
+actually like.
+
+## Stage 2 — Fresh research
+
+Full per-source instructions are in
+`.claude/skills/job-application-assistant/references/research-guide.md`. Read it
+before starting.
+
+**Browser tracks are serial; headless tracks are parallel.** Glassdoor, Blind
+and LinkedIn need the user's real logged-in Chrome, and there is exactly one of
+it. Launch the headless-safe tracks (Reddit via WebSearch/WebFetch, Indeed via
+MCP, news) as parallel subagents **first**, then drive the browser work yourself
+while they run.
+
+**Check the session before scraping each gated track.** Confirm the page shows a
+signed-in state (profile avatar, account menu). If it does not, tell the user so
+they can sign in, and move to the next track meanwhile. Never push through a
+logged-out or captcha'd page: a gated site fetched without a session produces a
+confident-looking empty result, which is worse than a stated gap.
+
+**Markdown is the source of truth.** Every finding persists to
+`Interview-Intel.md` before anything is built — one dated section per round,
+**appended, never overwritten**, so round 2 reuses round 1's scraping. The HTML
+pack is rendered *from* the markdown, never from memory: if a finding is not in
+the markdown, it does not go in the pack. Every reported question carries
+source, role and date.
+
+## Stage 3 — Question bank and model answers
+
+Assemble from five streams, in descending order of evidence:
+
+1. **Reported** — questions real candidates reported for this company and role. Source and date on every card.
+2. **Interviewer-derived** — what this specific panel cares about, from their profiles and posts. An interviewer's own description of their work *is* the question list.
+3. **JD-derived technical** — every essential is a potential question; every named system is a "walk me through how you have used…" question.
+4. **CV defence** — every bullet on the tailored CV, plus every PARTIAL, GAP and RISK from the audit. **This is where interviews are lost.**
+5. **Locked logistics** — salary, visa, availability, notice. Scripted verbatim per doctrine 2.
+
+Model answers: STAR-shaped where behavioural, structure-first where technical
+(state the framework, then the example). 60–120 seconds spoken. Every number
+from `FROZEN-FACTS.md` with its qualifiers, nothing invented. First person
+singular — "we" describes a team the candidate happened to be near, and
+interviewers discount it.
+
+Each answer ends with a one-line **cue**: the 5–8 word memory hook to practise
+from, so the pack teaches recall rather than recitation.
+
+Weight by round. HR screens are motivation, logistics and no-hard-stops.
+Technical rounds are streams 3 and 4. Finals are strategy, fit, and questions to
+ask them.
+
+Anything newly written here that belongs to the candidate permanently — a story
+that did not exist before — gets appended to `STAR-BANK.md` in the same turn.
+
+## Stage 4 — Build the HTML
+
+Start from `.claude/skills/job-application-assistant/assets/prep-template.html`.
+It is a complete interactive shell on the user's design system: tabs, reveal
+cards, confidence tracking, progress bar, dark mode, print. **Fill it; do not
+rebuild it.** Comments mark every `{{PLACEHOLDER}}` and show one exemplar of
+each repeatable component to duplicate.
+
+Tabs, in order: **Game plan** (process map, top-5 priorities, locked answers up
+front) · **Interviewers** (one card each: background, what they care about,
+likely questions from them) · **Question bank** (practice cards, filterable) ·
+**Technical revision** (concepts to re-derive the night before) · **Company
+intel** (entity, strategy hooks, dated news) · **Your questions** (tiered: safe,
+sharp, strategic) · **Danger zone and logistics** (integrity table as Q&A, day-of
+checklist, locked answers restated).
+
+Build steps:
+
+1. Copy the template to the scratchpad and fill every placeholder.
+2. Set `data-prep-key` to `<Company>-<Stage>` so saved progress is namespaced per round.
+3. Sanity check: `grep -c '{{' <file>` must return 0.
+4. Inline the design-system CSS so the file is self-contained and survives being opened on a phone:
+
+```bash
+"$CLAUDE_DESIGN/scripts/inline-css.sh" \
+  <scratch.html> "~/Documents/Jobs/<Company>/Interview-Prep-<Stage>.html"
+```
+
+`$CLAUDE_DESIGN` is the local design-system checkout. It is not hardcoded here
+because this repo is public and a filesystem path is machine-specific; resolve
+it from the `claude-design` skill, which knows where the system lives.
+
+The template ships with `href="CLAUDE_DESIGN_CSS_PATH"` as a placeholder for the
+same reason. Point it at the local design-system CSS before inlining, or let the
+inline script resolve it.
+
+If the design system is unavailable, do not silently emit an unstyled page:
+say so, and either inline a minimal self-contained stylesheet or stop. A prep
+pack that renders as unstyled HTML on a phone the morning of an interview is
+worse than no pack.
+
+No hardcoded colours anywhere — design tokens and component classes only.
+
+## Stage 5 — Verify in the browser
+
+On-disk correctness is not rendered correctness. Open the finished file in
+Chrome via Claude in Chrome and actually exercise it: click at least two tabs,
+reveal a question card, mark one "confident" and confirm the progress bar moves,
+toggle dark mode, screenshot light and dark.
+
+If anything is broken, fix and re-verify. **Do not report done on a pack you
+have not seen working.**
+
+## Stage 6 — Report
+
+A short summary in chat, not another file.
+
+- **The five questions to practise aloud first** — highest probability × highest stakes
+- **Weak spots** — where the audit's gaps meet likely questions, and the honest line for each
+- **Research gaps** — which tracks came back thin, and what that means for confidence
+- **Logistics** — the locked answers, restated once
+
+The weak spots matter most. The user can read the pack; what they cannot see is
+which question is most likely to hurt.
 
 ---
 
-## Step 5: Close the Loop
+## Notes
 
-End with:
-
-> Good luck. After the interview, run `/outcome <company>` to log the stage and any feedback - it sharpens the prep for the next round, and once the process resolves it feeds your fit-framework calibration via `/setup`.
-
-If Step 3 drafted new STAR answers the user approved for keeps, remind them those were appended to `07-interview-prep.md` (or offer again if they deferred).
-
----
-
-## Important Rules
-
-1. **Consistency with the submitted documents.** The interviewer read the archived CV and cover letter; prep must never contradict them or coach claims beyond them.
-2. **Honesty on gaps.** Weak matches get bridge answers (acknowledge → adjacent experience → learning path), never invented experience. Same rule as everywhere else in this repo.
-3. **Verified research only.** Company specifics go in the pack only after independent confirmation. Interviewer notes stick to public professional information.
-4. **Stage-appropriate prep.** A phone screen pack and a final-round pack are different documents; recorded feedback from earlier stages takes priority over generic question lists.
-5. **Write only to the application archive** — with one exception. The prep pack lands in `documents/applications/<company>_<role>/`; framework files are not edited, except appending user-approved STAR examples to `07-interview-prep.md` on explicit request.
-
-   **The exception is `01-candidate-profile.md`.** Interview prep is where new facts surface most often: the user recalls a metric, corrects a scope, or fills in a STAR stub. When that happens, write the fact into the profile, as well as putting it in the prep pack. A fact recorded only in prep material reads as unsupported to a later drafting session and gets stripped from CVs as a fabrication. Prep files are not a substitute for the profile.
+- **Later rounds reuse earlier work.** `Interview-Intel.md` accumulates. A technical-round pack following an HR-screen pack re-scrapes nothing except newly named interviewers and fresh news. Locked answers carry forward verbatim.
+- **Thin folders are fine.** If the company folder lacks research or audit files — an interview somewhere `/apply` never ran — say so, do a compressed version of the missing research inline, and note in the report that the CV-defence stream had no audit to work from.
+- **Debriefs feed forward.** When the user comes back with what was actually asked, append it to `Interview-Intel.md` under a Debrief heading and to `STAR-BANK.md`'s debrief table. It is the highest-quality evidence for the next round, and `/outcome` records the stage result alongside it.
+- **Mock interviews.** If the user wants to rehearse, run the roleplay from the built pack rather than from memory, and afterwards append what they struggled with to the debrief table.
