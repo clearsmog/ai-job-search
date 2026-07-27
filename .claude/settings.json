@@ -5,7 +5,9 @@
       "Bash(bun run:*)",
       "Bash(python salary_lookup.py:*)",
       "Bash(python3 salary_lookup.py:*)",
-      "Bash(pdftotext:*)"
+      "Bash(pdftotext:*)",
+      "Bash(typst compile:*)",
+      "Bash(pdfinfo:*)"
     ]
   }
 }

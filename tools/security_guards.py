@@ -39,6 +39,11 @@ ALLOWED_PERMISSIONS = {
     "Bash(python salary_lookup.py:*)",
     "Bash(python3 salary_lookup.py:*)",
     "Bash(pdftotext:*)",
+    # CV/cover-letter compilation and page-count verification. Both are
+    # read-only with respect to the repo: they write only to the company
+    # folder under ~/Documents/Jobs/, outside this tree.
+    "Bash(typst compile:*)",
+    "Bash(pdfinfo:*)",
 }
 
 # Personal-data ignore rules that must never disappear from .gitignore.
