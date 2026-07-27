@@ -1,54 +1,69 @@
 ---
-framework_version: 1.0.0
+framework_version: 1.1.0
 ---
 
-# Behavioral Profile
+# Behavioural evidence
 
-<!-- SETUP: This file is populated by running /setup -->
-<!-- You can use results from PI, DISC, Myers-Briggs, StrengthsFinder, or a self-assessment -->
+Behavioural claims follow the same rule as numeric ones: they are sourced, not
+generated. This repository is public and holds no personal assessment data.
 
-## Overview
-[YOUR_NAME]'s behavioral assessment identifies them as a **[PROFILE_TYPE]** pattern. [1-2 SENTENCE_SUMMARY].
+The behavioural material lives at **`~/Documents/Jobs/CV/STAR-BANK.md`**, a
+growing set of stories keyed to the documented facts in `FROZEN-FACTS.md`.
 
-## Core Behavioral Drives
+---
 
-| Drive | Level | Meaning |
-|-------|-------|---------|
-| [DRIVE_1] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_2] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_3] | [LEVEL] | [DESCRIPTION] |
-| [DRIVE_4] | [LEVEL] | [DESCRIPTION] |
+## Why a story bank rather than a personality profile
 
-## Strongest Behaviors
-- **[BEHAVIOR_1]:** [DESCRIPTION]
-- **[BEHAVIOR_2]:** [DESCRIPTION]
-- **[BEHAVIOR_3]:** [DESCRIPTION]
+A DISC or Myers-Briggs type produces adjectives, and adjectives do not survive
+an interview. "Detail-oriented" is unfalsifiable and every candidate claims it.
+What survives is a specific situation with a specific outcome that the
+interviewer can probe.
 
-## How You Work Best
-- [ENVIRONMENT_PREFERENCE_1]
-- [ENVIRONMENT_PREFERENCE_2]
-- [ENVIRONMENT_PREFERENCE_3]
+So the bank stores stories, not traits. Each story is anchored to a fact
+already on the CV, which means the interviewer has read the headline and the
+story is the expansion they were going to ask for anyway.
 
-## Growth Areas (frame positively in applications)
-- **[AREA_1]:** [HOW_TO_FRAME_IT_POSITIVELY]
-- **[AREA_2]:** [HOW_TO_FRAME_IT_POSITIVELY]
+## Structure of a story
 
-## Mapping to Job Posting Language
+| Field | Content |
+|---|---|
+| Anchor | The CV bullet or frozen fact this defends |
+| Situation | Context, in one or two sentences |
+| Task | What was actually the candidate's own responsibility |
+| Action | What the candidate personally did, in first person singular |
+| Result | The frozen number, quoted exactly as `FROZEN-FACTS.md` has it |
+| Reusable for | The competencies this story can answer |
+| Cue | 5–8 word memory hook to practise from |
 
-When a job posting mentions these keywords, it's a **strong behavioral fit**:
-- [KEYWORD_OR_PHRASE_THAT_MATCHES_YOUR_STYLE]
-- [ANOTHER_KEYWORD]
+**"We" is the enemy.** A story told in the first person plural describes a team
+the candidate happened to be near. Interviewers discount it automatically. If
+the honest telling is "we", the story needs a narrower framing that isolates
+what was genuinely the candidate's own.
 
-When a job posting mentions these, flag as **potential friction** (not deal-breaker):
-- [KEYWORD_OR_PHRASE_THAT_MIGHT_CLASH]
-- [ANOTHER_KEYWORD]
+## Sourcing rules
 
-## Management Style Preferences
-- [WHAT_MANAGEMENT_STYLE_WORKS_FOR_YOU]
-- [WHAT_DOESN'T_WORK]
+- A story may only quote numbers from `FROZEN-FACTS.md`, in that file's exact
+  wording, including any mandatory qualifier attached to the number.
+- A story that cannot be traced to a documented fact does not go in the bank.
+- Growth areas are recorded honestly and framed without spin. An invented
+  weakness ("I care too much") is as detectable as an invented strength, and it
+  wastes the one question where candour is rewarded.
 
-## Using This in Applications
-- **Cover letters:** [HOW_TO_WEAVE_IN_BEHAVIORAL_STRENGTHS]
-- **CV:** [WHAT_TO_EMPHASIZE]
-- **Interviews:** [WHAT_STAR_EXAMPLES_TO_USE]
-- **Don't overstate:** [WHAT_NOT_TO_CLAIM]
+## Growth areas and friction signals
+
+The bank records two things the CV never shows:
+
+- **Growth areas** — real gaps, with the honest line for each, drawn from the
+  "Integrity risks" tables of past `CV-JD-AUDIT.md` files rather than invented
+  for the occasion.
+- **Friction signals** — phrases in a job ad that predict a poor working fit
+  rather than a poor skills fit. These feed the culture-fit dimension of
+  `04-job-evaluation.md` and are worth surfacing before an application, not
+  after an offer.
+
+## Debriefs feed the bank
+
+After an interview, whatever was actually asked and however the answer landed
+goes back into the bank. A story that failed under follow-up is the highest
+value entry in the file: it names a real weak point while there is still time
+to fix the framing.
