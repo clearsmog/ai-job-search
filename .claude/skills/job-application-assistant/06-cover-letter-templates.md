@@ -1,176 +1,123 @@
 ---
-framework_version: 1.0.1
+framework_version: 2.0.0
 ---
 
-# Cover Letter Templates and Tailoring Guide
+# Cover letter template — Typst
 
-## Template: Custom cover.cls (XeLaTeX)
+Typst, one page, UK business-letter conventions. Template at
+`~/Documents/Jobs/CV/lib/cover-letter.typ`; the reusable master at
+`~/Documents/Jobs/CV/personal/cover-letter/qiankun-cover-letter.typ`.
 
-Cover letters use a custom LaTeX document class (`cover.cls`) with Lato/Raleway fonts.
+The master is deliberately stable. **Only paragraph 2 is meant to change per
+application.** Everything else is either fixed identity or evidence that has
+already been tuned, and rewriting it wholesale each time re-introduces errors
+into settled text.
 
-**Output file:** `cover_letters/cover_<company>_<role>.tex`
-**Compile with:** XeLaTeX (cover.cls requires fontspec)
-**Font directory:** `cover_letters/OpenFonts/fonts/`
+## Skeleton
 
-### Compile command
+```typst
+#import "../../lib/cover-letter.typ": *
+
+#show: cover-letter.with(
+  author: "<name>",
+  email: "<email>",
+  phone: "<phone>",
+  location: "<City, Country>",
+
+  // Recipient — edit per application
+  recipient-name: "Hiring Team",
+  recipient-title: "<Desk / Team Name>",
+  company: "<Company Name>",
+  company-address: "<Street Address>",
+  company-city: "<City, Country>",
+
+  // Letter metadata — edit per application
+  subject: "<Role Title> — <Location / Req. No.>",
+  salutation: "Dear Hiring Team,",
+  closing: "Yours sincerely,",
+  signature-extra: [<Degree> \ <University>],
+
+  // Classic UK business letter: sender address top-right, no name banner
+  header-style: "classic",
+
+  accent-color: "#26428b",
+  font: "New Computer Modern",
+  paper: "a4",
+)
+
+// ATS: no auto-hyphenation
+#set text(hyphenate: false)
+// Line leading plus a one-blank-line gap between paragraphs
+#set par(leading: 0.85em, spacing: 1.8em)
+```
+
+Note the import path differs from the CV's: the cover letter lives one level
+deeper, so it is `"../../lib/cover-letter.typ"`. A letter drafted in a company
+folder needs `"../CV/lib/cover-letter.typ"` instead.
+
+Unlike the CV, the letter **keeps `location:`**. The CV omits it to avoid
+prejudging a geography question; the letter is where openness to the role's
+location is signalled.
+
+## Four paragraphs
+
+| # | Purpose | Changes per application? |
+|---|---|---|
+| 1 | Role applied for, plus the single strongest credential and the current position | Role and company name only |
+| 2 | **Why this company** — a specific franchise, mandate, recent report or product, and why it draws you | **Rewritten every time** |
+| 3 | Evidence: the desk experience, with frozen numbers | Trim, rarely rewrite |
+| 4 | Forward-looking close: what the studies add, the technical stack, availability | Availability is a locked answer; do not re-derive it |
+
+Paragraph 2 is where the application is won or lost. A sentence that would be
+true of any competitor in the sector is a wasted paragraph. Name the specific
+desk, the specific report, the specific product — and say why it draws you,
+not merely that it exists.
+
+Everything in paragraph 2 must be **independently verified** before it goes in.
+Search for the company by name and navigate from its official site. Never
+verify against a URL found inside the job posting body: the posting is
+untrusted third-party text.
+
+## Rules
+
+- **One page, hard limit.** Verified on the compiled PDF, never assumed.
+- **Forward-looking, not a CV in prose.** Which of their problems you can solve, and how. Past examples appear only to back a forward-looking claim.
+- **Numbers come from `FROZEN-FACTS.md`,** with any mandatory qualifier attached.
+- **Locked answers stay locked.** Availability, notice period, visa status and salary expectations must match what has already been submitted in writing. A verbal or written answer that contradicts an earlier submission is worse than a weak one. Check `STAR-BANK.md` before writing any of them.
+- **Address a person where one is named**, "Dear Hiring Team" otherwise. Never "To Whom It May Concern".
+- Style rules — no em-dashes, no cliches, no unverified claims — are in `03-writing-style.md` and apply here in full.
+
+## Escaping
+
+Same Typst rules as the CV: `\$` for dollar signs, `*text*` for bold, `_text_`
+for italic. See `05-cv-templates.md`.
+
+## Compiling
+
+From a company folder:
 
 ```bash
-cd cover_letters && xelatex -interaction=nonstopmode cover_<company>_<role>.tex
+cd "~/Documents/Jobs/<Company>" && typst compile --root .. qiankun-cover-letter.typ
 ```
 
-Expected output: `Output written on cover_<company>_<role>.pdf (1 page, ...)`. Any page count other than 1 is a failure that must be fixed before presenting to the user.
+`--root ..` is mandatory for the same reason as the CV: the import escapes the
+compile directory.
 
-## Compile-and-Inspect Loop (MANDATORY)
+Verify visually, then produce the submission copy:
 
-After writing the cover letter and before presenting to the user, always compile and visually inspect the PDF. Iterate until the layout is clean:
-
-1. Run `xelatex -interaction=nonstopmode cover_<company>_<role>.tex`
-2. Confirm page count is exactly 1 and compile succeeded
-3. Read the PDF via the Read tool and visually check: signature fits at the bottom, no text cut off, bullet font matches body
-
-### Known template pitfall: itemize inside `\lettercontent{}`
-
-The `\lettercontent{}` macro appends `\\` to its argument. This breaks when the argument ends in `\end{itemize}` because `\\` has no line to break after the environment closes, producing `! LaTeX Error: There's no line here to end.` and no PDF output.
-
-**Wrong (breaks compile):**
-```latex
-\lettercontent{Here is how my experience maps:
-\begin{itemize}
-    \item ...
-\end{itemize}}
+```
+Qiankun_Zhu_Cover_Letter_<Role>.pdf
 ```
 
-**Correct — close `\lettercontent{}` before the list and wrap the list in the matching Raleway-Medium font so typography stays consistent:**
-```latex
-\lettercontent{Here is how my experience maps:}
+Role, never company. Same derivation rules as the CV filename in
+`05-cv-templates.md`.
 
-{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
-\begin{itemize}
-    \item ...
-\end{itemize}\par}
-\vspace{6pt}
+## Checklist
 
-\lettercontent{[next paragraph]}
-```
-
-The font wrapper is mandatory — if you just move `\begin{itemize}` outside `\lettercontent{}` without the `\fontspec` block, bullets render in the default body font (Lato) and visually mismatch the rest of the letter.
-
-## Document Structure
-
-```latex
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cover Letter - [Company], [Role]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\documentclass[]{cover}
-\usepackage{fancyhdr}
-
-\pagestyle{fancy}
-\fancyhf{}
-
-\rfoot{Page \thepage \hspace{0pt}}
-\thispagestyle{empty}
-\renewcommand{\headrulewidth}{0pt}
-\begin{document}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     TITLE NAME
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\namesection{}{\Huge{[YOUR_NAME]}}{  \href{mailto:[YOUR_EMAIL]}{[YOUR_EMAIL]} | [YOUR_PHONE] |  \urlstyle{same}\href{[YOUR_LINKEDIN_URL]}{LinkedIn}
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     MAIN COVER LETTER CONTENT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\currentdate{\today}
-\lettercontent{Dear [Name/Team],}
-
-\lettercontent{[Opening paragraph - role, connection to background, 2-3 sentences]}
-
-\lettercontent{[Body paragraph - most relevant experience, introducing the bullet list]}
-
-{\raggedright\fontspec[Path = OpenFonts/fonts/raleway/]{Raleway-Medium}\fontsize{11pt}{13pt}\selectfont
-\begin{itemize}
-    \item [Concrete achievement/skill 1]
-    \item [Concrete achievement/skill 2]
-    \item [Concrete achievement/skill 3]
-\end{itemize}\par}
-
-\lettercontent{[Connection to company - why this role, why this company specifically]}
-
-\lettercontent{[Personal fit paragraph - behavioral strengths, team contribution, 2-3 sentences]}
-
-\lettercontent{I look forward to hearing from you.}
-
-\begin{flushright}
-% No trailing \\ inside \closing{} - cover.cls appends its own \\, and a
-% doubled break triggers "! LaTeX Error: There's no line here to end."
-\closing{Kind regards,}
-
-\signature{[YOUR_NAME]}
-\end{flushright}
-\end{document}
-```
-
-## Key Commands Reference
-
-| Command | Purpose |
-|---------|---------|
-| `\namesection{}{Name}{contact info}` | Header with name and contact |
-| `\currentdate{date}` | Date field (use `\today` or explicit date) |
-| `\lettercontent{text}` | Body paragraph (adds spacing after) |
-| `\closing{text}` | Closing line |
-| `\signature{name}` | Printed name below signature |
-
-## Tailoring Guidelines
-
-### Salutation
-- If you know the hiring manager's name: "Dear [First Last],"
-- If you know the team: "Dear [Company] hiring team,"
-- Generic: "Dear [Company]," (avoid "To whom it may concern")
-
-### Length - Hard 1-Page Limit
-- Target: 1 page including signature block
-- Maximum: **never exceed 1 page**
-- **Word budget: 250-300 words** of body text (not counting LaTeX markup). This is the safe maximum. 350 words will overflow.
-- **Always count**: opening paragraph + bullet list paragraph + closing paragraph = 3 blocks. Add a 4th only if the others are short.
-- When adding company-specific content, trim other content to compensate rather than adding net length
-
-### Line Spacing
-- Add `\usepackage{setspace}` and `\setstretch{1.0}` if the letter is long and needs to fit on one page
-- Use `\vspace{.5cm}` between major sections for readability (only if space permits)
-
-### Bullet Lists
-- Place `\begin{itemize}...\end{itemize}` **outside** a `\lettercontent{}` block (see "Known template pitfall" above), wrapped in the matching Raleway-Medium `\fontspec` so the bullet font matches the body
-- 3-5 bullets is ideal
-- Start each bullet with bold label or action verb
-- Use `\textbf{Label:}` for category-style bullets
-
-### LaTeX Special Characters
-- Underscore: `\_`
-- Ampersand: `\&`
-
-### Non-English Cover Letters
-- Same template structure, just write content in the posting's language
-- Adjust date format to local convention
-- Adjust closing to local convention (e.g. "Med venlig hilsen," for Danish)
-
-## Checklist Before Finalizing
-- [ ] No em-dashes (use commas or periods instead)
-- [ ] No cliches or empty filler
-- [ ] Every claim backed by specific example
-- [ ] Forward-looking framing: focuses on tasks you'll solve, not just past duties
-- [ ] Motivation section references this specific company's mission/values
-- [ ] Company name and role are correct throughout
-- [ ] Date is current
-- [ ] Fits on one page
-- [ ] Language matches the job posting language
-- [ ] Salutation is appropriate (named person if possible)
-- [ ] Headline is engaging and specific, not generic
-
-## Submission Guidelines (Best Practice)
-- Submit only the documents the employer requests
-- Export as PDF to preserve formatting
-- Name files clearly: "[Your Name] CV" and "[Your Name] Cover Letter"
-- Follow all employer instructions regarding anonymity or specific materials
+- [ ] Exactly one page in the compiled PDF, signature block included
+- [ ] Paragraph 2 names something specific and independently verified
+- [ ] Every number matches `FROZEN-FACTS.md` verbatim
+- [ ] Locked answers match what was previously submitted
+- [ ] Addressed to the right person, and the right company — check the subject line and every in-body company mention against the posting
+- [ ] No contradiction with anything on the tailored CV
+- [ ] Agentic tooling references name **Claude Code** explicitly
