@@ -57,12 +57,6 @@ REQUIRED_IGNORE_RULES = [
     # are a backstop for anything ever drafted in-tree.
     "cv/**",
     "cover_letters/**",
-    "documents/cv/**",
-    "documents/linkedin/**",
-    "documents/diplomas/**",
-    "documents/references/**",
-    "documents/applications/**",
-    "documents/interview/**",
     "job_search_tracker.csv",
 ]
 
@@ -73,9 +67,7 @@ REQUIRED_IGNORE_RULES = [
 # required rules cannot see that. Any negation outside this allowlist is a
 # failure - add an intentional one here in the same PR, exactly as with
 # ALLOWED_PERMISSIONS, so the widening is explicit and reviewable.
-ALLOWED_IGNORE_NEGATIONS = {
-    "!documents/**/.gitkeep",
-}
+ALLOWED_IGNORE_NEGATIONS: set[str] = set()
 
 FORBIDDEN_SCRIPTS = {"preinstall", "install", "postinstall", "prepare", "prepack"}
 

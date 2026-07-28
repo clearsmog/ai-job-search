@@ -20,9 +20,12 @@ class ReadmeImageReferences(unittest.TestCase):
         refs = IMG_SRC.findall(text) + MD_IMG.findall(text)
         return [r for r in refs if not r.startswith(("http://", "https://"))]
 
-    def test_readme_exists_and_references_at_least_one_local_image(self):
-        refs = self._local_refs()
-        self.assertGreaterEqual(len(refs), 1, "README lost its mascot header image")
+    def test_readme_exists(self):
+        # Upstream also asserted at least one local image, to protect its mascot
+        # header. This fork's README is a technical document with no images, so
+        # that assertion would fail on a correct README. The guard that matters
+        # - a referenced image must exist - is below and still runs.
+        self.assertTrue(README.is_file(), "README.md is missing")
 
     def test_all_local_image_references_resolve(self):
         for ref in self._local_refs():

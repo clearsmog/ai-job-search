@@ -1,6 +1,6 @@
 # /add-template - Register a Custom CV or Cover Letter Template
 
-You are helping the user register their own CV or cover letter template with the AI Job Search framework — LaTeX, Typst, or any other toolchain that compiles to PDF from the command line. The framework ships with moderncv (banking style) for CVs and a custom `cover.cls` for cover letters. This command lets the user swap in their own template: store the template files, capture usage instructions (source extension, compile command, fonts, style rules, page limits), verify the template compiles, and wire it into the `/apply` workflow so every future application uses it.
+You are helping the user register their own CV or cover letter template with the AI Job Search framework — LaTeX, Typst, or any other toolchain that compiles to PDF from the command line. The active templates are Typst and live outside this repo at `~/Documents/Jobs/CV/lib/`, described natively in `05-cv-templates.md` and `06-cover-letter-templates.md` — nothing needs registering to use them. This command exists for a *second* template: an alternative theme, or a LaTeX variant an employer demands. It stores the template files, captures usage instructions (source extension, compile command, fonts, style rules, page limits), verifies the template compiles, and wires it into `/apply` so it overrides the Typst guidance while active.
 
 `$ARGUMENTS` may contain a subcommand, a file path, or nothing.
 
@@ -164,14 +164,14 @@ Insert (or replace, if one exists) this block immediately after the file's H1 ti
 > - **Compile command:** `<the full declared command>` (not the command named in the stock guidance below — `/apply`'s compile step must use this instead)
 > - **Fonts:** <font summary, including any path note for bundled fonts>
 > - **Page limit:** exactly <N> page(s)
-> - **Output file:** `cv/main_<company>_<role><source-extension>` / `cover_letters/cover_<company>_<role><source-extension>`; copy any class/package/font files the template needs into the output directory, or reference them by relative path
+> - **Output file:** written into the company folder at `~/Documents/Jobs/<Company>/` with this template's source extension; copy any class, package or font files the template needs into that folder, or reference them by relative path
 <!-- END ACTIVE-TEMPLATE -->
 ```
 
 Rules:
 
 - Exactly **one** managed block per guidance file. Replace the whole block between the `BEGIN`/`END` markers when switching templates; never stack blocks.
-- **`--use default`**: remove the managed block entirely. The stock moderncv / cover.cls guidance below it is untouched and takes over again.
+- **`--use default`**: remove the managed block entirely. The Typst guidance below it is untouched and takes over again.
 - Do not modify anything outside the markers.
 
 ---
@@ -189,7 +189,7 @@ Present a summary:
 > Useful follow-ups:
 > - `/add-template --list` — see all registered templates
 > - `/add-template --use <other-name>` — switch templates
-> - `/add-template --use default` — go back to the stock <moderncv | cover.cls> template
+> - `/add-template --use default` — go back to the Typst template
 
 ---
 
@@ -198,4 +198,4 @@ Present a summary:
 - Registration is idempotent: re-running with the same name offers to update the existing template rather than duplicating it.
 - Templates are stored profile-agnostic (`[PLACEHOLDER]` tokens) so they can be shared or committed without leaking personal data.
 - The compile check in Step 4 is non-negotiable — a template that has never compiled will fail mid-`/apply`, which is the worst place to discover it.
-- Activation is a small managed block, not a rewrite of the guidance files: `/setup` and manual edits to `05`/`06` survive template switches, and `--use default` is a clean revert.
+- Activation is a small managed block, not a rewrite of the guidance files: manual edits to `05`/`06` survive template switches, and `--use default` is a clean revert to the Typst guidance.

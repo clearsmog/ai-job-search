@@ -4,12 +4,32 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-Releases are vetted checkpoints of `master`. If you maintain a personalized fork,
-prefer updating to a tagged release over pulling raw `master` (see
-[SETUP.md, section 8](SETUP.md#8-pulling-upstream-updates-into-your-fork)). The
-`framework_version` markers on methodology files tell you which of your customized
-files a release touched; `python3 tools/check_upstream_updates.py` lists them with
-per-file diff commands.
+**This is a hard fork and no longer tracks upstream.** Entries below the fork
+point are upstream's history, kept for provenance. `framework_version` markers
+on methodology files still record which revision of each file is in use, but
+there is no merge path back to
+[MadsLorentzen/ai-job-search](https://github.com/MadsLorentzen/ai-job-search).
+
+## [Fork] - 2026-07-28
+
+Hard fork, personalised for a UK energy-trading and risk job search.
+
+### Changed
+- CV and cover letter are **Typst, one page**, living outside the repo at `~/Documents/Jobs/CV/`. The moderncv/`cover.cls` LaTeX stack was removed entirely.
+- Profile split: this repo holds doctrine and workflow only. Every fact lives in `~/Documents/Jobs/CV/FROZEN-FACTS.md`, outside a public repo, and is the single authority all documents are drafted from.
+- `/apply` rebuilt into eight stages, merging the drafter-reviewer loop with a research-and-audit pipeline. Work-authorisation and location gates now run **before** the research stage.
+- `/interview` rebuilt to produce an interactive HTML prep pack per round.
+- `/upskill` now ranks gaps by audit evidence rather than re-deriving requirements from job titles.
+- Tracker and per-application archives moved to `~/Documents/Jobs/`.
+
+### Added
+- `/facts` — reconciles every fact source, finding drift, unrecorded facts and stale commitments.
+- `/mail-sync` — replaces `/gmail-sync`, backed by the Apple Mail MCP.
+- `reed-search` and `efinancialcareers-search` portal CLIs, both parsing structured data and both verified against the live sites.
+- Indeed routed through its official MCP rather than a scraper.
+
+### Removed
+- The four Danish portal skills, `/setup`, `/reset`, `documents/`, and the LaTeX toolchain.
 
 ## [Unreleased]
 

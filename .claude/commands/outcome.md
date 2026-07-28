@@ -3,9 +3,9 @@
 You are recording what happened to a job application: progress updates (interview invitations, stages completed, offers) and final resolutions (hired, rejected, no response). The data lands in two places the framework already reads but nothing systematically writes:
 
 - `~/Documents/Jobs/job_search_tracker.csv` - the status column that `/scrape` and `/rank` use for dedup and exclusion
-- `~/Documents/Jobs/<Company>/` - the per-application archive (posting, submitted drafts, `outcome.md`) that `/setup` Path A mines to calibrate `04-job-evaluation.md` and surface STAR candidates
+- `~/Documents/Jobs/<Company>/` - the per-application archive (posting, submitted drafts, `outcome.md`) that `/facts` sweeps for unrecorded facts and employer commitments, and that `/upskill` reads for recurring gaps
 
-`/outcome` writes the data; `/setup` interprets it. This command never edits the evaluation framework or profile files itself.
+`/outcome` writes the data; `/facts` and `/upskill` interpret it. This command never edits the evaluation framework or the frozen-facts record itself.
 
 The command also owns the stretch *before* there is an outcome to record: the **follow-up branch** (Step 2b) surfaces open applications that have gone quiet, drafts a brief follow-up note in the user's voice, and logs it - so the chase and the resolution it eventually leads to live in one flow.
 
@@ -45,7 +45,7 @@ Ask the user what happened, then classify:
 - Interview invitation / stage scheduled or completed (phone screen, technical, case, final round)
 - Offer received (not yet accepted or declined)
 
-**Resolutions** (application closed) - these map to the status enum in `documents/README.md` that `/setup` parses:
+**Resolutions** (application closed) - the status enum:
 - `hired` - accepted an offer
 - `offer_declined` - received an offer, turned it down
 - `rejected` - explicit rejection at any stage
@@ -55,7 +55,7 @@ Ask the user what happened, then classify:
 Also collect, without interrogating - one or two open questions are enough:
 - Dates for the stages reached
 - Any feedback received, verbatim where the user remembers it
-- What they'd do differently, and any signal about what the company valued (these feed `/setup`'s calibration and STAR-candidate mining, so concrete beats polished)
+- What they'd do differently, and any signal about what the company valued. Concrete beats polished: this is the raw material for the debrief table in `STAR-BANK.md`, and a story that failed under follow-up is the most useful thing a round produces
 
 ---
 
@@ -78,7 +78,7 @@ Enter this branch from the `followup` argument (Step 0) or from the offer under 
 **Logging.** Once the user confirms they will send it (or have sent it), log it in the same turn - an unlogged follow-up breaks the next run's quiet-days math:
 
 - Append `followed up YYYY-MM-DD` to the row's `notes` column (Step 4's rule applies: append a dated note, never restructure the CSV).
-- Save the final note as `followup_YYYY-MM-DD.md` in the application's archive folder. Safe by documented convention: `/setup` reads only the four named archive files and ignores extras (the same rule that covers `/interview`'s prep files), and the company folder lives outside this repo entirely.
+- Save the final note as `followup_YYYY-MM-DD.md` in the company folder, alongside everything else for that application.
 
 If the user decides not to send, log nothing.
 
@@ -90,9 +90,9 @@ If the user decides not to send, log nothing.
 
 Create or update `~/Documents/Jobs/<Company>/`. All content here is personal data. The folder lives outside this repo, so nothing needs redacting - but nothing from it may be copied into the repo either.
 
-1. **`cv_draft.tex` and `cover_letter.tex`** - copy (never move) the submitted files. Locate them via the tracker row's `cv_file`/`cover_letter_file` columns; if those are empty, look for `cv/main_<company>*.tex` and `cover_letters/cover_<company>_*.tex`. If a file already exists in the archive, leave it - the archived version is what was actually submitted. If no draft files exist (application made outside `/apply`), skip with a note.
+1. **The submitted CV and cover letter** - these already live in the company folder, written there by `/apply`. Locate them via the tracker row's `cv_file`/`cover_letter_file` columns; if those are empty, look for `qiankun-resume.pdf` and the `Qiankun_Zhu_CV_<Role>.pdf` submission copy alongside it. Never overwrite one: the file on disk is what was actually submitted. If none exist (application made outside `/apply`), note that and move on.
 2. **`job_posting.md`** - if it already exists, leave it. Otherwise try WebFetch on the tracker row's `source` URL and save the posting text. If the URL is dead (postings expire fast - this is exactly why the archive matters), ask the user to paste the posting, or write a stub noting the posting is unavailable. **Never reconstruct a posting from memory.**
-3. **`outcome.md`** - write or update it in exactly the format documented in `documents/README.md`, so `/setup` Path A parses it without special cases:
+3. **`outcome.md`** - write or update it in the format below, kept stable so later commands can parse it without special cases:
 
 ```markdown
 # Outcome: <Company> — <Role>
@@ -130,8 +130,8 @@ Update the matched row's `status` column (e.g. `applied` → `interview` → `of
 Count the `outcome.md` files under `~/Documents/Jobs/` with a **final** status (not `in_progress`).
 
 - If 3 or more are resolved (or 2+ share a pattern - same role type rejected twice, same sector going silent), suggest:
-  > "You now have <N> resolved applications on record. Run `/setup` (Path A) to fold them into your evaluation framework - it calibrates fit scoring from what actually got interviews, and mines your interview feedback for STAR examples."
-- Do **not** write anything into `04-job-evaluation.md` or other skill files yourself. `/setup` Path A owns that merge - it is read-before-write and idempotent, and duplicating its logic here would race it.
+  > "You now have <N> resolved applications on record. Run `/upskill` to see which requirements keep coming up that the profile does not support, and `/facts` to sweep the folders for facts and commitments that never made it into the record."
+- Do **not** write anything into `04-job-evaluation.md` or other skill files yourself. Recording an outcome is not the same as re-weighting the framework, and conflating them would let one rejection quietly move the scoring.
 
 ---
 
@@ -159,7 +159,7 @@ If the recorded status is `hired`, congratulate the user warmly first - this is 
 
 ## Important Rules
 
-1. **Write data, don't interpret it.** The archive and tracker are the outputs; calibration belongs to `/setup`. This command never edits profile or framework files.
+1. **Write data, don't interpret it.** The archive and tracker are the outputs; interpretation belongs to `/facts` and `/upskill`. This command never edits the frozen-facts record or framework files.
 2. **The archived version is the submitted version.** Existing files in the application folder are never overwritten by fresher drafts.
 3. **Never fabricate.** A dead posting URL gets a user-pasted copy or an explicit "unavailable" stub, not a reconstruction. Feedback is recorded as the user reports it.
 4. **Stay schema-compatible.** `outcome.md` follows the format in `documents/README.md` exactly (`in_progress` is the one addition, for open applications); the tracker keeps its columns.

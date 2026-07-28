@@ -8,12 +8,17 @@ Follow these steps **exactly in order**. Do not skip steps.
 
 ## Step 0: Read Existing Profile Files
 
-Read these two files in parallel before doing anything else. You must know what is already there so you do not propose duplicates.
+Read these before doing anything else. You must know what is already recorded so you do not propose duplicates.
 
-- `.claude/skills/job-application-assistant/01-candidate-profile.md`
-- `.claude/skills/job-application-assistant/02-behavioral-profile.md`
+- `~/Documents/Jobs/CV/FROZEN-FACTS.md` — the authority on every fact
+- `~/Documents/Jobs/CV/STAR-BANK.md` — stories, growth areas, locked answers
 
 Hold this content in context throughout the command. Do not re-read these files later.
+
+**`/expand` and `/facts` are complementary, not overlapping.** `/facts` reconciles
+what the *internal* sources already say and catches drift between them.
+`/expand` looks *outward* — public profiles, repositories, publications,
+transcripts — for competencies that were never written down anywhere.
 
 ---
 
@@ -21,30 +26,30 @@ Hold this content in context throughout the command. Do not re-read these files 
 
 Scan every available source for "experience items" — anything that implies skill, knowledge, or competency. Process sources in this order.
 
-### 1a. documents/cv/
-Read all files in `documents/cv/`. Extract:
+### 1a. CV variants
+Read `~/Documents/Jobs/CV/personal/resume/*.typ`, `~/Documents/Jobs/CV/qiankun-resume.typ`, and any tailored variant under `~/Documents/Jobs/<Company>/`. Extract:
 - Every course or module listed (including university coursework and online courses)
 - Every certification mentioned, with issuer and date
 - Every job responsibility bullet point (tools, methods, outcomes)
 - Every independent project or side project
 - Every volunteer or extracurricular role
 
-### 1b. documents/linkedin/
-Read all files in `documents/linkedin/`. Extract:
+### 1b. LinkedIn
+Read the profile through Claude in Chrome against the logged-in session, or a saved export if one exists. Extract:
 - Courses and certifications in the "Licenses & Certifications" section
 - Skills and endorsements list
 - Volunteer experiences
 - Projects section
 - Any platform-specific items not already found in the CV
 
-### 1c. documents/diplomas/
-Read all files in `documents/diplomas/`. Extract:
+### 1c. Transcripts and certificates
+Read any transcript, diploma or certificate PDFs found under `~/Documents/Jobs/`. Extract:
 - All course/module names listed on transcripts
 - Thesis title and subject area
 - Any specialisation or track name
 
-### 1d. documents/references/
-Read all files in `documents/references/`. Extract:
+### 1d. References and testimonials
+Read any reference letters or written testimonials found under `~/Documents/Jobs/`. Extract:
 - Competency language used by the referee (what skills or qualities they mention)
 - Any specific projects, tools, or methods named
 
@@ -168,16 +173,20 @@ Wait for the user's response before writing anything.
 
 Apply only the confirmed items. Use the Edit tool to add to the relevant sections of each file — do not rewrite entire files.
 
-### Additions to `01-candidate-profile.md`
-- Technical skills (primary and secondary) → append to the Technical Skills section
-- Domain knowledge → append to the Domain Knowledge or Technical Skills section (match the existing structure)
-- Methods and practices → append appropriately
+### Additions to `~/Documents/Jobs/CV/FROZEN-FACTS.md`
+- Skills → the Skills inventory
+- Certifications and qualifications → the Qualifications table
+- A project or role that no source records → its own section, with dates
 
-For each addition, add a brief source annotation in a comment or parenthetical: *(Coursera — Deep Learning Specialisation)*, *(GitHub — project-name)*, etc. This makes future `/expand` runs idempotent.
+Annotate each addition with its source: *(GitHub — project-name)*, *(transcript — NTU)*. That is what makes a later `/expand` idempotent, and what lets `/facts` tell a recorded fact from an invented one.
 
-### Additions to `02-behavioral-profile.md`
-- Soft/behavioral signals → append to the "Strongest Behavioral Traits" or "How I Work Best" section (match existing structure)
-- Always label inferred behavioral additions: *[Inferred from reference letter — Name / review before relying on this]*
+**Anything uncertain goes to Unresolved discrepancies, not to the main tables.**
+An unresolved fact never reaches a CV.
+
+### Additions to `~/Documents/Jobs/CV/STAR-BANK.md`
+- A situation worth telling → a new story slot, anchored to whichever fact it defends
+- Competency language a referee used → the growth-areas or friction-signals tables as appropriate
+- Always label an inference as one: *[Inferred from reference letter — review before relying on this]*
 
 ---
 
