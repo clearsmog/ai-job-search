@@ -74,6 +74,17 @@ Run all portal CLI calls in parallel where possible using the Agent tool. Collec
 
 If a CLI tool exits with a non-zero code, log the error message and continue — do not abort the whole search.
 
+**Portals with no `--jobage` support.** Some sites ignore every date filter, so their CLI has no recency flag at all (`efinancialcareers-search` is one, and says so in its own SKILL.md). Do not skip such a portal for lacking one, and do not silently discard its undated results: take the page, tag the entries `date unknown`, and let `/rank` weigh them. A portal dropped for a missing flag looks identical to a portal that found nothing.
+
+#### 1b-ii. Indeed, via MCP rather than a CLI
+
+Indeed has **no portal CLI and must not get one**: scraping it breaches its terms and runs into heavy bot protection. Use the official integration instead, when those tools are available in the session:
+
+- `mcp__claude_ai_Indeed__search_jobs` — takes `search`, `location`, `country_code` (use `"GB"`), and optional `job_type`. Returns title, company, location, posted date, job type and an apply URL.
+- `mcp__claude_ai_Indeed__get_job_details` — full description for one `job_id`.
+
+Treat its results exactly like a CLI portal's: same pool, tagged `portal: "indeed-mcp"`, same dedup in Step 2. If the tools are not connected, note Indeed as unavailable in the Step 5 summary rather than falling back to scraping it.
+
 #### 1c. WebSearch fallback
 
 Use `WebSearch` for:

@@ -1,81 +1,119 @@
-# Search Queries for Job Scraper
+# Search queries for the job scraper
 
-<!-- SETUP: Customize these queries based on your skills, target roles, and location -->
+Target market: **UK, London-centred**, energy trading and commodities, market
+and credit risk, quantitative analysis. Adjust when the target changes.
 
-## Installed portal CLIs (primary for `/scrape`)
+## Sources, in the order `/scrape` should use them
 
-`/scrape` discovers every portal skill under `.agents/skills/*/SKILL.md` and runs its CLI first. Shipped country-agnostic CLIs include `linkedin-search` and `freehire-search`; Danish demos and any skill you add with `/add-portal` are included the same way. You do **not** need a matching `site:` line below for those CLIs to run.
+`/scrape` discovers every portal skill under `.agents/skills/*/SKILL.md` and
+runs its CLI first. No `site:` line below is needed for those.
 
-The `site:` query templates in this file are the **WebSearch fallback** — for portals without a CLI, company career pages, or when a CLI fails.
+| Source | Kind | Best for |
+|---|---|---|
+| `efinancialcareers-search` | CLI | **The sector board.** Front and middle office, trading, commodities, risk, quant. Roles here often never reach general boards. |
+| `reed-search` | CLI | Largest UK general board. Broad coverage, salary figures on most listings. |
+| `linkedin-search` | CLI | Reach and recency; also where the hiring manager is visible. Personal use only per its own ToS note. |
+| `freehire-search` | CLI | Aggregator across ~50 ATS platforms, tech-first — catches quant and data roles posted only on a company's own ATS. |
+| **Indeed MCP** | MCP tools | `mcp__claude_ai_Indeed__search_jobs` / `get_job_details`. **Use this instead of scraping Indeed.** It is an official integration over Indeed's own API; scraping Indeed breaches its terms and hits heavy bot protection. Call with `country_code: "GB"`. |
+| WebSearch `site:` | Fallback | Company career pages, and any portal without a CLI. |
 
-## Search Sites
+## Query categories
 
-Primary (your market's job boards - scaffold one with `/add-portal`):
-- **[YOUR_JOB_BOARD]** - your market's largest general job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: [YOUR_COUNTRY] / [YOUR_CITY]); also covered by `linkedin-search` CLI
-- **[YOUR_INDUSTRY_JOB_BOARD]** - a niche/industry board for your field (optional)
-- **[YOUR_ADDITIONAL_JOB_BOARD]** - another major board for your market (optional)
+Run the top three by default. Run all on "broad". On a focus area, prioritise
+the matching category and generate 2–3 custom queries for it.
 
-Secondary (company career pages via Google):
-- Direct Google searches with `site:` filters for known target companies
+### Priority 1 — Market and credit risk in commodity trading
 
-## Query Categories
-
-Queries are grouped by priority. Each query should be combined with your location terms (e.g. your city, region, or metro area) where the site supports it.
-
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
-
-These match your strongest and most desired career direction.
-
-```
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE]" [YOUR_COUNTRY]
-```
-
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
-
-These match your domain expertise.
+The strongest match and the stated career direction.
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
+market risk analyst
+credit risk analyst commodity
+risk analyst energy trading
+middle office analyst commodities
+trade control analyst
 ```
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
-
-Adjacent roles you could pivot into.
-
+WebSearch fallback:
 ```
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
+site:efinancialcareers.co.uk "market risk analyst" London
+site:linkedin.com/jobs "credit risk analyst" energy trading London
 ```
 
-### Priority 4: Broader Technical / Consulting
+### Priority 2 — Energy, LNG, gas and power
 
-Wider net for general technical roles.
+Domain expertise, where the LNG and gas experience argues loudest.
 
 ```
-site:[YOUR_JOB_BOARD] [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+LNG analyst
+gas trading analyst
+power trading analyst
+energy trading analyst
+commodity analyst
+emissions carbon analyst
 ```
 
-## Location Filter
+WebSearch fallback:
+```
+site:efinancialcareers.co.uk LNG OR "natural gas" analyst London
+site:linkedin.com/jobs "energy trading" analyst London
+```
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+### Priority 3 — Quantitative and data
 
-## Date Filter
+Where the Python, modelling and FRM side leads.
 
-Only include jobs posted within the last 14 days, or with an application deadline that has not yet passed. If a posting date cannot be determined, include it but flag as "date unknown".
+```
+quantitative analyst commodities
+quantitative risk analyst
+data analyst trading
+model validation analyst
+pricing analyst derivatives
+```
 
-## Adapting Queries
+### Priority 4 — Adjacent and broader
 
-If the user specifies a focus area, select queries from the matching category and also generate 2-3 custom queries for that focus. For example:
-- "/scrape [focus_area]" -> relevant category queries + custom focus-specific queries
+Wider net; expect lower fit scores.
+
+```
+trading operations analyst
+settlements analyst commodities
+product control analyst
+treasury analyst energy
+graduate scheme commodity trading
+```
+
+## Target employers for direct career-page checks
+
+Energy majors and trading houses: Shell, BP, TotalEnergies, Eni, Equinor,
+Centrica, Vitol, Trafigura, Gunvor, Mercuria, Glencore, Freepoint, Hartree,
+Castleton Commodities, Petroineos, SEFE, Uniper, RWE, EDF Trading, Engie,
+Axpo, Brook Green Supply, SmartestEnergy, Statkraft.
+
+Banks and funds with commodity desks: Goldman Sachs, Morgan Stanley, JP Morgan,
+Macquarie, Jefferies, BNP Paribas, Société Générale, Citi.
+
+## Location filter
+
+- **London** — the target. On-site and hybrid both fine.
+- **Remote UK** — include.
+- **Reading, Windsor, Slough, St Albans** and similar commuter towns — include, flag the commute.
+- **Edinburgh, Aberdeen** — include; Aberdeen is a real energy hub, and Edinburgh is the current base until the London move.
+- Elsewhere in the UK — include only on a strong fit, flagged as requiring relocation.
+- Outside the UK — exclude unless it names visa sponsorship and relocation.
+
+## Date filter
+
+Only jobs posted within the last 14 days, or with an open deadline. Where a
+posting date cannot be determined, include it and flag "date unknown".
+
+**eFinancialCareers returns no date at search time** — its results payload omits
+it and the site ignores every date-filter parameter. Either fetch `detail` for
+the dates that matter or accept the whole page and let `/rank` sort it out. Do
+not silently drop its results for having no date.
+
+## Work-authorisation note
+
+Sponsorship status gates hard and is checked in `/apply`, not here. But when a
+posting states "no sponsorship" prominently, record that in the scrape notes so
+`/rank` can weight it rather than discovering it at drafting time.
