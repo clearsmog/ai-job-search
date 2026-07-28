@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
-bun.lock
+# bun.lock is tracked on purpose: CI runs `bun install` on every push, and
+# without a lockfile the portal CLIs re-resolve `typescript: ^5.4.0` each run.
 
 # Python
 __pycache__/
