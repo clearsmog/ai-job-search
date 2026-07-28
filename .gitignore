@@ -71,8 +71,8 @@ documents/interview/**
 # Personal job search tracking
 job_search_tracker.csv
 
-# Gmail sync state (message IDs, subjects - personal data)
-gmail_sync/
+# /mail-sync state (message IDs) lives at ~/Documents/Jobs/.mail_sync_state.json,
+# outside this repo, alongside the tracker it belongs to.
 
 # Generated reports (personal output from /html-report)
 reports/

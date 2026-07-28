@@ -6,7 +6,7 @@ silently: the draft-only rule (the branch must never send anything on the
 user's behalf), the no-new-claims rule that keeps follow-ups inside the
 framework's never-fabricate boundary, the two-follow-up cap that terminates
 into /outcome's own no_response flow, and the deliberate contrast with
-/gmail-sync's 30-day staleness flag.
+/mail-sync's 30-day staleness flag.
 """
 import subprocess
 import sys
@@ -64,12 +64,12 @@ class OutcomeFollowupBranchSpec(unittest.TestCase):
             "spec lost the cap that stops the follow-up branch from nagging indefinitely",
         )
 
-    def test_threshold_contrast_with_gmail_sync_documented(self):
+    def test_threshold_contrast_with_mail_sync_documented(self):
         text = COMMAND.read_text(encoding="utf-8")
         self.assertIn(
             "30-day staleness flag",
             text,
-            "spec lost the rationale for the 10-day nudge vs /gmail-sync's 30-day alarm",
+            "spec lost the rationale for the 10-day nudge vs /mail-sync's 30-day alarm",
         )
 
     @unittest.skipUnless(
