@@ -56,7 +56,7 @@ Read the posting's eligibility / work rights / "who can apply" section
 |---|---|
 | Names a **citizenship or permanent-residency requirement** ("must be a citizen of X", "permanent resident", "full working rights" meaning citizen/PR) | **FAIL — hard stop.** Do not score, do not draft. Quote the exact wording back. |
 | Requires a **security clearance** at any level | **FAIL** in most cases, since clearance is normally gated on citizenship or long residency. Verify the specific scheme rather than assuming. |
-| States **"no visa sponsorship available"** or **"we cannot sponsor"** | **FAIL** unless the candidate holds an unsponsored route that covers the full term of the role. |
+| States **"no visa sponsorship available"** or **"we cannot sponsor"** | **Depends on the candidate's current route.** If they hold an unsponsored route with full working rights (a post-study route, for example), this is a **FLAG, not a FAIL**: the role is workable now but has a cliff edge when that route expires. Surface the cliff edge to the user before applying rather than after. |
 | **Explicitly names** the candidate's permit class, or says "we sponsor", "visa holders considered", "international applicants welcome" | **PASS**, verified. Worth noting as a positive in the application. |
 | **Silent** on citizenship, residency or sponsorship | **PROCEED, marked unverified.** Check the employer's own careers or international-applicants page before drafting. |
 
