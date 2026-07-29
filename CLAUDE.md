@@ -38,6 +38,7 @@ person, or a draft CV to a tracked file.
         │ 1 extract   <Role>-<Company>.md         │  JD, employer's headings verbatim
         │ 2 research  Research-<Role>.md          │  entity, desk, strategy
         │             *People-LinkedIn.md         │  hiring team, logged-in browser
+        │             Sector-<Sector>.md          │  market landscape, data root, reused
         │ 3 audit     CV-JD-AUDIT.md              │  match matrix + integrity risks
         │ 4 tailor    qiankun-resume.typ          │  reframed, never re-facted
         │ 5 review    adversarial + grounding     │  ungrounded claims deleted

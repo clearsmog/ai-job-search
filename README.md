@@ -22,6 +22,7 @@ rebuilt around a Typst one-page CV and the UK energy-trading and risk market.
         │ 2 gate      work authorisation, location│  cheap; kills bad roles early
         │ 3 research  Research-<Role>.md          │  entity, desk, strategy
         │             *People-LinkedIn.md         │  hiring team, logged-in browser
+        │             Sector-<Sector>.md          │  market landscape, data root, reused
         │ 4 audit     CV-JD-AUDIT.md              │  match matrix + integrity risks
         │ 5 tailor    qiankun-resume.typ          │  reframed, never re-facted
         │ 6 review    adversarial + grounding     │  ungrounded claims deleted

@@ -15,6 +15,7 @@ GitHub fork.
 [2] gate    → fit verdict                   cheap; kills bad roles before research
 [3] research→ Research-<Role>.md            company, entity, desk
             → <Company>-People-LinkedIn.md  hiring team, logged-in browser
+            → Sector-<Sector>.md            market landscape, at the data root
 [4] audit   → CV-JD-AUDIT.md                BEFORE the CV is touched
 [5] tailor  → qiankun-resume.typ            reframed, never re-facted
 [6] review  → adversarial agent + grounding audit → revise
@@ -119,9 +120,10 @@ question list). Never call merely to be remembered.
 
 ## Stage 3 — Research
 
-Two independent tracks. **Orchestration rule: headless tracks run in parallel as
+Three tracks. **Orchestration rule: headless tracks run in parallel as
 subagents; the browser track is serial, because there is exactly one logged-in
-Chrome.** Launch Track A first, then drive Track B yourself while it runs.
+Chrome.** Launch Tracks A and C together, then drive Track B yourself while
+they run.
 
 ### Track A — company, entity, desk → `Research-<Role>.md`
 
@@ -165,6 +167,45 @@ worth the time.
 
 Attribute everything and flag inference as inference. These files feed interview
 prep too, so a confident-sounding guess is worse than an acknowledged unknown.
+
+### Track C — sector landscape → `~/Documents/Jobs/Sector-<Sector>.md`
+
+Headless-safe. Dispatch as a subagent alongside Track A.
+
+Track A establishes which entity and desk the role sits on. This track
+establishes **what that desk is up against**: market size and direction, the
+segments that are growing and shrinking, who the real competitors are, and the
+two or three themes everyone in the sector is currently arguing about.
+
+**It lives at the data root, not in the company folder, and is written once per
+sector.** Five applications to energy-trading firms share one landscape; only
+the company-specific reading of it differs. Reuse an existing
+`Sector-<Sector>.md` and refresh it rather than rewriting — but treat anything
+older than about three months as stale for market direction, because a
+half-year-old view of a commodity market is worse than none.
+
+If the `sector-overview` skill is available in the session (the
+`equity-research` plugin), use it for the outline — market overview, growth
+drivers, competitive positioning, thematic trends — and **cap the output at
+roughly one page**. That skill is built for 5-to-30-page client reports; this
+needs the shape, not the length. Without the plugin, cover the same four
+headings inline.
+
+What the rest of the pipeline does with it:
+
+- **Stage 4's audit** reads sector pressure points to decide which of the
+  candidate's experience to foreground. A sector under margin pressure rewards
+  a different bullet from one in a build-out.
+- **The cover letter's "why this firm" paragraph** is the only place in the
+  application where sector fluency is legible to a reader, and the only defence
+  against the interchangeable-letter failure mode.
+- **`/interview`** picks it up as the ground for "what's happening in our
+  market?", a question the candidate is expected to answer without notes.
+
+Same trust boundary as Track A: start from the sector and the company identity,
+never from links in the posting body. Cite every number with its source and
+date — an uncited market size cannot be defended when an interviewer challenges
+it, which makes it a liability rather than preparation.
 
 ## Stage 4 — Audit before touching the CV
 
