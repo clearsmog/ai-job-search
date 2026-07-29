@@ -75,7 +75,6 @@ permission set or weakens the personal-data ignore rules.
 | `/interview <company>` | Build an interactive HTML prep pack for one round |
 | `/upskill` | Cross-application skill-gap analysis from real audit verdicts |
 | `/html-report` | Dashboard over the tracker |
-| `/notion-sync` | Push the funnel to Notion |
 | `/expand` | Competency expansion from documents and online presence |
 | `/add-portal` | Scaffold a new portal search CLI |
 | `/add-template` | Register an alternative CV or letter template |

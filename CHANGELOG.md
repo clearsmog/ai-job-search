@@ -30,6 +30,9 @@ Hard fork, personalised for a UK energy-trading and risk job search.
 
 ### Removed
 - The four Danish portal skills, `/setup`, `/reset`, `documents/`, and the LaTeX toolchain.
+- `/notion-sync`. The Notion MCP server was never connected, so the command only ever
+  reached its preflight exit. `/html-report` keeps the deep-review lane; the glanceable
+  lane is a published Artifact, which needs no third-party server.
 
 ## [Unreleased]
 
