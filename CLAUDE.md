@@ -124,9 +124,3 @@ Page-break behaviour is not predictable from source.
 - [ ] Reading order of extracted text matches visual order
 - [ ] Agentic tooling references name **Claude Code** explicitly
 - [ ] Submission copy named `Qiankun_Zhu_CV_<Role>.pdf` — role, never company
-
-## House rules
-
-- No "Co-Authored-By: Claude" in commits.
-- Quote paths containing spaces.
-- Delete dead code rather than commenting it out.
