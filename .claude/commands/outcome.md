@@ -79,8 +79,16 @@ Enter this branch from the `followup` argument (Step 0) or from the offer under 
 
 - Append `followed up YYYY-MM-DD` to the row's `notes` column (Step 4's rule applies: append a dated note, never restructure the CSV).
 - Save the final note as `followup_YYYY-MM-DD.md` in the company folder, alongside everything else for that application.
+- Put the next nudge in the calendar, when `ical` is installed and this was the **first** follow-up. Until now the 10-day threshold only existed as arithmetic recomputed on the next run of this command, which requires the user to think of running it; an all-day event 10 days out makes the same number act on its own. Calendar name comes from `~/Documents/Jobs/.ical_calendar`, the same file `/interview` uses — read it, and ask once if it is absent.
 
-If the user decides not to send, log nothing.
+  ```
+  ical add "Follow up: <Company> — <Role>" -s "<date + 10 days>" --all-day \
+    -c "<calendar>" -n "<absolute path to followup_YYYY-MM-DD.md>" -o json
+  ```
+
+  Record the returned full `id` in that note. Skip this on the second follow-up: the termination rule below means there is no third, so a reminder to send one is worse than no reminder at all.
+
+If the user decides not to send, log nothing — including no calendar event.
 
 **Termination.** When an application hits two follow-ups and stays silent, do not offer a third. This is the moment to continue in this same command's Step 2: note how long it has been since last contact and let the user decide whether to record `no_response` - as ever, no imposed cutoff. And if the user mentions an actual response while in this branch (an interview invitation, a rejection), drop out of the branch and record it through the normal Step 2 flow.
 
@@ -122,6 +130,10 @@ Update rules: tick stage checkboxes as they are reached (add the date in parenth
 ## Step 4: Update the Tracker
 
 Update the matched row's `status` column (e.g. `applied` → `interview` → `offer` → `hired` / `rejected` / `no response` / `offer declined` / `withdrawn`) and append a short dated note to the `notes` column. Never restructure the CSV, reorder rows, or touch other rows.
+
+**Clear the outstanding reminders when the status becomes final.** Follow-up nudges from Step 2b and interview events from `/interview`'s Stage 6 recorded their event ids in the company folder — the `followup_*.md` notes and `Interview-Intel.md` respectively. A rejection recorded today should not leave the user being reminded next week to chase it. Collect those ids, list what will go, and let the user confirm before removing any of them: this is the one thing in this command that destroys data outside the folder.
+
+Use the full `UUID:UUID` id and `--id` only, and run `ical show --id "<id>"` first to confirm the target. A shortened macOS event id resolves to an arbitrary event, so a positional argument here would delete somebody's dentist appointment. An id that no longer resolves means the user already removed the event by hand — say so and move on rather than searching for something to delete.
 
 ---
 
