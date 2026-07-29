@@ -13,7 +13,8 @@ next to the CV that earned the interview.
 [3] build    question bank + model answers, drafted against doctrine
 [4] render  → Interview-Prep-<Stage>.html   from assets/prep-template.html
 [5] verify   in the browser: tabs, cards, dark mode actually work
-[6] report   top questions to practise, weak spots
+[6] diary    the round + a prep block, via ical; event ids recorded
+[7] report   top questions to practise, weak spots
 ```
 
 Everything lands in `~/Documents/Jobs/<Company>/`.
@@ -207,7 +208,56 @@ toggle dark mode, screenshot light and dark.
 If anything is broken, fix and re-verify. **Do not report done on a pack you
 have not seen working.**
 
-## Stage 6 — Report
+## Stage 6 — Diary the round
+
+A pack the user meets for the first time an hour before the call has failed.
+Put the round in the calendar with `ical`, and record the event ids so a
+reschedule can find them again.
+
+If `ical` is not installed (`command -v ical`), skip the stage and say so once
+in Stage 7. Do not improvise with another tool.
+
+**Never invent a time.** If Stage 0 could not establish the date and start time
+from the folder, ask. An event at a guessed hour is worse than no event,
+because the user will act on it.
+
+1. **Which calendar.** Read `~/Documents/Jobs/.ical_calendar`. If it is absent,
+   run `ical calendars`, ask which one, and write the answer there — it is
+   personal configuration and belongs in the data root, never in this repo.
+
+2. **The round.** Duration from Stage 0; default 60 minutes and say which you
+   used. Carry the joining detail in the field that matches the format: `--url`
+   for a video call, `--location` plus `--travel` for an in-person round, so
+   the travel block lands in the diary too. Pass `--timezone` whenever the
+   invitation names one that is not the user's — a mis-zoned final round is
+   unrecoverable.
+
+   ```
+   ical add "<Round> — <Company>" -s "<date> <time>" -e "<date> <end>" \
+     -c "<calendar>" --alert 1d --alert 1h -o json
+   ```
+
+3. **A prep block**, 60 minutes, the evening before or the morning of —
+   ask which. `--notes` carries the absolute path to the pack HTML so the
+   reminder is one click from the thing it is reminding about.
+
+4. **Record the ids.** Append the full `id` of both events to
+   `Interview-Intel.md` under an `## Events` heading, with the round and what
+   each event is. Without them a reschedule means hunting the event by hand.
+
+**Only `--id` with the full `UUID:UUID` string is safe.** A macOS event
+identifier opens with a run of characters shared by every event in the store,
+so a shortened id resolves to an arbitrary event — on unpatched `ical`
+(≤ v0.12.2) `delete` acts on whichever one that was, silently. Confirm with
+`ical show --id "<full id>"` before any `update` or `delete`, and never pass a
+positional id to either.
+
+If `ical add -o json` returns something other than JSON, the installed build
+predates the fix for that; recover the id with
+`ical search "<title>" -o json` rather than reading it off the summary line,
+which prints a truncated and therefore useless id.
+
+## Stage 7 — Report
 
 A short summary in chat, not another file.
 

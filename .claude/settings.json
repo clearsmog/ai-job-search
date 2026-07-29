@@ -7,7 +7,12 @@
       "Bash(python3 salary_lookup.py:*)",
       "Bash(pdftotext:*)",
       "Bash(typst compile:*)",
-      "Bash(pdfinfo:*)"
+      "Bash(pdfinfo:*)",
+      "Bash(ical calendars:*)",
+      "Bash(ical list:*)",
+      "Bash(ical search:*)",
+      "Bash(ical show:*)",
+      "Bash(ical add:*)"
     ]
   }
 }

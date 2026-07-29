@@ -44,6 +44,17 @@ ALLOWED_PERMISSIONS = {
     # folder under ~/Documents/Jobs/, outside this tree.
     "Bash(typst compile:*)",
     "Bash(pdfinfo:*)",
+    # Calendar, for /interview's diary stage and /outcome's follow-up reminder.
+    # Reads plus `add`, which is additive and undoable by hand. `ical delete`
+    # and `ical update` are deliberately absent: they destroy or rewrite an
+    # existing calendar entry, and on macOS a shortened event id resolves to an
+    # arbitrary event, so the blast radius of a wrong argument is somebody
+    # else's appointment. Those two prompt, every time, on purpose.
+    "Bash(ical calendars:*)",
+    "Bash(ical list:*)",
+    "Bash(ical search:*)",
+    "Bash(ical show:*)",
+    "Bash(ical add:*)",
 }
 
 # Personal-data ignore rules that must never disappear from .gitignore.
